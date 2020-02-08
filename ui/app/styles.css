@@ -69,6 +69,7 @@ body {
     justify-content: flex-start;
 }
 .el-menu.is-hidden { display: none; }
+.el-menu.hide-help .menu-button.help { opacity: 0; }
 
 .menu-button {
     width:    var(--menu-size);
@@ -121,12 +122,21 @@ body {
 .el-menu.is-intro .menu-button.back::before,
 .el-menu.is-intro .menu-button.help::before {
     display: block;
+    animation: ShakeLikeRefuse 2.82s cubic-bezier(.36,.07,.19,.97) infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 .el-menu.is-intro .menu-button.back::after,
 .el-menu.is-intro .menu-button.help::after {
     display: none;
 }
-
+@keyframes ShakeLikeRefuse {
+  10%, 90%      { transform: translate3d(-1px, 0, 0); }
+  20%, 80%      { transform: translate3d( 2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60%      { transform: translate3d( 4px, 0, 0); }
+}
 
 
 /* remove smile
@@ -220,14 +230,21 @@ body {
   --instock: 1;
   --color: firebrick;
 }
-#Products .box.is-empty { opacity: 0.15; }
+#Products .box.is-empty {
+    opacity: 0.25;
+}
+#Products .box.is-empty::before {
+    background-repeat: no-repeat;
+    background-size:   contain;
+    background-image:  url(../art/stopit.svg);
+}
 
-#Products .box:nth-child(1) { --color: hsl(184, 60%, 24%); }
+#Products .box:nth-child(1) { --color: hsl(202, 81%, 23%); }
 #Products .box:nth-child(2) { --color: hsl(187, 39%, 40%); }
-#Products .box:nth-child(3) { --color: hsl(179, 60%, 35%); }
+#Products .box:nth-child(3) { --color: hsl(355, 23%, 48%); }
 #Products .box:nth-child(4) { --color: hsl(212, 34%, 29%); }
-#Products .box:nth-child(5) { --color: hsl(202, 81%, 23%); }
-#Products .box:nth-child(6) { --color: hsl(355, 23%, 48%); }
+#Products .box:nth-child(5) { --color: hsl(184, 60%, 24%); }
+#Products .box:nth-child(6) { --color: hsl(179, 60%, 35%); }
 
 #Products .box::before,
 #Products .box::after {
@@ -316,6 +333,14 @@ body {
 .el-thank-you {
     font-size: 4rem;
 }
+.el-feedback {
+    background-color: hsl(359, 54%, 53%);
+    font-size: 4rem;
+    width: 16rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+}
 
 
 /*  ------------------------------------------------------ Help */
@@ -326,6 +351,102 @@ body {
 .el-about-illustration img {
     max-width: 100%;
     max-height: 40vh;
+}
+
+/*  ------------------------------------------------------ Pump Action */
+
+#Pump {
+    padding-top: 1rem;
+}
+.el-machine {
+  --size: 0.7;
+    margin: 0 auto;
+    width:  calc( 100vw * var(--size));
+    height: calc( 64vw * var(--size) );
+    background-repeat: no-repeat;
+    background-size:   contain;
+    background-image: url(../art/action.svg);
+    position: relative;
+    z-index:  0;
+}
+.el-pump {
+    position: absolute;
+    z-index:  1;
+    top:    calc( 11.033vw * var(--size) );
+    left:   calc( 71.053vw * var(--size) );
+    width:  calc( 14.372vw * var(--size) );
+    height: calc( 14.046vw * var(--size) );
+    background-repeat: no-repeat;
+    background-size:   contain;
+    background-image:  url(../art/action-pump.svg);
+    animation: SimpleRotation 1800ms linear infinite;
+    transform-origin: center center;
+    
+}
+@keyframes SimpleRotation {
+    from {transform: rotate(0deg);}
+    to   {transform: rotate(359deg);}
+}
+.el-bubbles {
+    position: absolute;
+    z-index:  1;
+    top:    calc( 30vw * var(--size) );
+    left:   calc( 25vw * var(--size) );
+    width:  calc(  5vw * var(--size) );
+    height: calc(  5vw * var(--size) );
+
+    background-repeat: no-repeat;
+    background-size:   contain;
+    background-image:  url(../art/eye-1.svg);
+    transform: translateX(0%) translateY(0%);
+    opacity: 0.4;
+    animation: BubbleIt 1800ms cubic-bezier(0.6,    0.04,  0.98,  0.335) infinite;
+}
+.el-bubbles::before {
+    content: '';
+    position: absolute;
+    z-index:  1;
+    top:      0;
+    right:    0;
+    bottom:   0;
+    left:     0;
+    opacity: 0.8;
+    transform: translate(-50%,-100%) scale(0.5);
+    background-repeat: no-repeat;
+    background-size:   contain;
+    background-image:  url(../art/eye-2.svg);
+}
+.el-bubbles::after {
+    content: '';
+    position: absolute;
+    z-index:  1;
+    top:      0;
+    right:    0;
+    bottom:   0;
+    left:     0;
+    opacity: 0.6;
+    transform: translate(50%,50%) scale(0.32);
+    background-repeat: no-repeat;
+    background-size:   contain;
+    background-image:  url(../art/eye-3.svg);
+}
+@keyframes BubbleIt {
+    0% {
+        transform: translateX(0%) translateY(0%);
+        opacity: 0.4;
+    }
+    20% {
+        transform: translateX(-25%) translateY(-50%);
+        opacity: 0.3;
+    }
+    60% {
+        transform: translateX(25%) translateY(-200%);
+        opacity: 0.2;
+    }
+    100% {
+        transform: translateX(5%) translateY(-300%);
+        opacity: 0.1;
+    }
 }
 
 /*  EOF styles */
