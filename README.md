@@ -2,6 +2,26 @@
 
 http://ec2-13-53-129-204.eu-north-1.compute.amazonaws.com:8080/ui/
 
+When a user starts using the machine, the machine should send
+```
+{
+  "event": "start",
+  data: {
+    "id": string // machine id
+  }
+}
+```
+
+When a user finishes using the machine, the machine should send
+```
+{
+  "event": "end",
+  data: {
+    "id": string // machine id
+  }
+}
+```
+
 ## Web app
 
 http://ec2-13-53-129-204.eu-north-1.compute.amazonaws.com:8080/web/
