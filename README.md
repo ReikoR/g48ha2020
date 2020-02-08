@@ -95,7 +95,9 @@ While dispensing a liquid, the machine periodically updates the product availabi
   "event": "updateProduct",
   "data": {
     "id": string, // product id
-    "available": float // how much product in liters is now available
+    "available": float, // how much product in liters is now available
+    "filled": float, // how much product in liters user has taken
+    "paid": float, // how much in euros user has paid for the product
   }
 }
 ```
