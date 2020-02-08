@@ -20,11 +20,11 @@ const baseLayers = {
     Streets: streets
 }
 
-/* const markers = L.featureGroup().on('click', (e) => {
+const markers = L.featureGroup().on('click', (e) => {
     // Set marker to the center
     console.log('Clsiked on marker', e);
 });
-markers.addTo(map); */
+markers.addTo(map);
 
 const diswashing = L.layerGroup().addTo(map);
 const soap = L.layerGroup().addTo(map);
