@@ -68,6 +68,7 @@ body {
     display: flex;
     justify-content: flex-start;
 }
+.el-menu.is-hidden { display: none; }
 
 .menu-button {
     width:    var(--menu-size);
@@ -126,6 +127,8 @@ body {
     display: none;
 }
 
+
+
 /* remove smile
 
 .el-menu.is-intro::after {
@@ -159,7 +162,7 @@ body {
     position: fixed;
     z-index:  1;
 
-    
+    padding:   calc( 1*var(--menu-size) + 1rem) 1rem 1rem 1rem;
 }
 .screen:not(.is-active) {
     transform: translateX(100%);
@@ -170,17 +173,16 @@ body {
 
 
 #Intro {
-    padding-top: 0;
-
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr min-content;
     grid-template-areas: 'logo text' 'logo entrance';
     align-content: stretch;
+    padding-top: 1rem;
 }
 .el-intro-message {
     grid-area: text;
-    font-size:3rem;
+    font-size:4rem;
 }
 .el-intro-button {
     grid-area: entrance;
@@ -188,25 +190,31 @@ body {
     font-size: 4rem;
 }
 
+.el-launch-app {
+    background-color: hsl(359, 54%, 53%);
+    font-size: 4rem;
+    width: 16rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    
+}
+
 
 /*  ------------------------------------------------------ Products */
 
 
 #Products {
-    display: grid;
+    display:  grid;
+    grid-gap: 1rem;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows:    1fr 1fr;
-    grid-gap: 1rem;
-    padding:  calc(var(--menu-size) + 1rem) 1rem 1rem 1rem;
     align-content: stretch;
 }
 #Products .box {
-    position: relative;
-    z-index:  1;
-
-    text-shadow: -1px -1px 0px var(--c--NobleBlack);
-    border:       0.25rem solid currentColor;
-    font-size:    3rem;
+    position:   relative;
+    z-index:    1;
+    border:     0.25rem solid black;
+    font-size:  3rem;
     text-align: center;
 
   --instock: 1;
@@ -245,34 +253,79 @@ body {
 }
 
 
-/*  ------------------------------------------------------ Size */
+/*  ------------------------------------------------------ Setup */
 
 
-#Size {
+#Setup {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows:    1fr;
     grid-gap: 1rem;
-    padding:  calc(var(--menu-size) + 1rem) 1rem 1rem 1rem;
     align-content: stretch;
 }
-#Size .box {
+#Setup .box {
     position: relative;
     z-index:  1;
 
-    text-shadow: -1px -1px 0px var(--c--NobleBlack);
-    border:       0.25rem solid currentColor;
-    font-size:    3rem;
+    border:       0.25rem solid black;
+    font-size:    4rem;
     text-align:   center;
-
+    align-items: flex-end;
+}
+#Setup .box::before,
+#Setup .box::after {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    top:      0;
+    right:    0;
+    bottom:   0;
+    left:     0;
+}
+#Setup .box::before {
+  --color: hsl(184, 60%, 24%);
+    background-color: var(--color);
+}
+#Setup .box::after {
     background-repeat: no-repeat;
     background-size:   contain;
+    opacity: 0.15;
 }
-#Size .box.is-empty { opacity: 0.15; }
 
-.box.size-s { background-image: url(../art/size-s.svg); }
-.box.size-m { background-image: url(../art/size-m.svg); }
-.box.size-l { background-image: url(../art/size-l.svg); }
+.box.size-s::after { background-image: url(../art/size-s.svg); }
+.box.size-m::after { background-image: url(../art/size-m.svg); }
+.box.size-l::after { background-image: url(../art/size-l.svg); }
 
+
+/*  ------------------------------------------------------ Action */
+
+
+.el-hold-the-button {
+    font-size: 4rem;
+}
+.el-stop-the-button {
+    margin: var(--menu-size) auto 0 auto;
+    transform: scale(2);
+}
+.menu-button.el-stop-the-button         { background-image: url(../art/eye-3.svg);  }
+.menu-button.el-stop-the-button::after  { background-image: url(../art/stopit.svg); }
+
+
+/*  ------------------------------------------------------ Thanks */
+
+.el-thank-you {
+    font-size: 4rem;
+}
+
+
+/*  ------------------------------------------------------ Help */
+
+.el-help-text {
+    font-size: 4rem;
+}
+.el-about-illustration img {
+    max-width: 100%;
+    max-height: 40vh;
+}
 
 /*  EOF styles */
