@@ -6,7 +6,7 @@ When a user starts using the machine, the machine should send
 ```
 {
   "event": "start",
-  data: {
+  "data": {
     "id": string // machine id
   }
 }
@@ -16,7 +16,7 @@ When a user finishes using the machine, the machine should send
 ```
 {
   "event": "end",
-  data: {
+  "data": {
     "id": string // machine id
   }
 }
