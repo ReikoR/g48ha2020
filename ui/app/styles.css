@@ -1,0 +1,275 @@
+/*  ------------------------------------------------------ Native font stack 2018 */
+
+:root {
+  --font-family--native-sans:
+       -apple-system,        /* Safari for macOS and iOS (San Francisco) */
+        system-ui,           /* macOS Chrome, Windows Chrome */
+        BlinkMacSystemFont,  /* Chrome < 56 for macOS (San Francisco) */
+       "Segoe UI",           /* Windows */
+        Roboto,              /* Android */
+        Oxygen,              /* KDE */
+        Ubuntu,              /* Ubuntu */
+        Cantarell,           /* GNOME */
+       "Fira Sans",          /* Firefox OS */
+       "Helvetica Neue",     /* old macOS */
+        Arial,               /* Basic web fallback */
+        sans-serif,
+       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* Emoji */
+}
+
+
+/*  ------------------------------------------------------ Define design system */
+
+
+*, *:before, *:after { box-sizing: border-box; }
+
+html {
+    height:  100%;
+    margin:  0;
+    padding: 0;
+}
+body {
+    width:   100%;
+    height:  auto;
+    margin:  0;
+    padding: 0;
+
+    background-color: hsl(226, 15%, 12%);
+    color:            hsl(226, 27%, 90%);
+
+    font-family: var(--font-family--native-sans);
+    line-height: 1.5;
+    font-weight: 400;
+
+    overflow: hidden;
+  --menu-size: 10vw;
+}
+
+.box {
+    display: flex;
+    justify-content: center;
+    align-content:   center;
+    align-items:     center;
+
+    font-size: 2rem;
+    padding:   1rem;
+}
+
+
+/*  ------------------------------------------------------ Nav menu */
+
+
+.el-menu {
+    position: fixed;
+    z-index:  2;
+    top:  0;
+    left: 0;
+
+    display: flex;
+    justify-content: flex-start;
+}
+
+.menu-button {
+    width:    var(--menu-size);
+    height:   var(--menu-size);
+    position: relative;
+    z-index:  0;
+
+    background-repeat: no-repeat;
+    background-size:   contain;
+    transform-origin:  center center;
+    transition:        transform 240ms;
+    transition-timing-function: cubic-bezier(0.175,  0.885, 0.320, 1.275);
+}
+.menu-button::before,
+.menu-button::after {
+    content: '';
+    position: absolute;
+    z-index:  1;
+    top:      0;
+    right:    0;
+    bottom:   0;
+    left:     0;
+
+    background-repeat: no-repeat;
+    background-size:   contain;
+}
+.menu-button::before { display: none;  }
+.menu-button::after  { display: block; }
+
+.menu-button.back         { background-image: url(../art/eye-1.svg); }
+.menu-button.back::before { background-image: url(../art/eye-ball-1.svg); }
+.menu-button.back::after  { background-image: url(../art/back.svg); }
+.menu-button.help         { background-image: url(../art/eye-2.svg); }
+.menu-button.help::before { background-image: url(../art/eye-ball-2.svg); }
+.menu-button.help::after  { background-image: url(../art/help.svg); }
+
+.menu-button.stop {
+    background-image: url(../art/eye-3.svg);
+    display: none;
+}
+
+/*  Intro buttons */
+
+.el-menu.is-intro .menu-button.back {
+    transform: translate(100%, 100%) scale(2);
+}
+.el-menu.is-intro .menu-button.help {
+    transform: translate(125%, 100%) scale(2);
+}
+.el-menu.is-intro .menu-button.back::before,
+.el-menu.is-intro .menu-button.help::before {
+    display: block;
+}
+.el-menu.is-intro .menu-button.back::after,
+.el-menu.is-intro .menu-button.help::after {
+    display: none;
+}
+.el-menu.is-intro::after {
+    content: '';
+    position: absolute;
+    z-index:  1;
+    top:      0;
+    right:    0;
+    bottom:   0;
+    left:     0;
+
+    background-repeat: no-repeat;
+    background-size:   contain;
+    background-image: url(../art/smile.svg);
+
+    width:    var(--menu-size);
+    height:   var(--menu-size);
+    transform: translate(150%, 300%) scale(2);
+    opacity: 0.15;
+}
+
+
+
+/*  ------------------------------------------------------ Screens */
+
+
+.screen {
+    height:   100vh;
+    width:    100%;
+    overflow: hidden;
+    position: fixed;
+    z-index:  1;
+
+    
+}
+.screen:not(.is-active) {
+    transform: translateX(100%);
+}
+
+
+/*  ------------------------------------------------------ Intro */
+
+
+#Intro {
+    padding-top: 0;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr min-content;
+    grid-template-areas: 'logo text' 'logo entrance';
+    align-content: stretch;
+}
+.el-intro-message {
+    grid-area: text;
+    font-size:3rem;
+}
+.el-intro-button {
+    grid-area: entrance;
+    background-color: hsl(359, 54%, 53%);
+    font-size: 4rem;
+}
+
+
+/*  ------------------------------------------------------ Products */
+
+
+#Products {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows:    1fr 1fr;
+    grid-gap: 1rem;
+    padding:  calc(var(--menu-size) + 1rem) 1rem 1rem 1rem;
+    align-content: stretch;
+}
+#Products .box {
+    position: relative;
+    z-index:  1;
+
+    text-shadow: -1px -1px 0px var(--c--NobleBlack);
+    border:       0.25rem solid currentColor;
+    font-size:    3rem;
+    text-align: center;
+
+  --instock: 1;
+  --color: firebrick;
+}
+#Products .box.is-empty { opacity: 0.15; }
+
+#Products .box:nth-child(1) { --color: hsl(184, 60%, 24%); }
+#Products .box:nth-child(2) { --color: hsl(187, 39%, 40%); }
+#Products .box:nth-child(3) { --color: hsl(179, 60%, 35%); }
+#Products .box:nth-child(4) { --color: hsl(212, 34%, 29%); }
+#Products .box:nth-child(5) { --color: hsl(202, 81%, 23%); }
+#Products .box:nth-child(6) { --color: hsl(355, 23%, 48%); }
+
+#Products .box::before,
+#Products .box::after {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    top:      0;
+    right:    0;
+    bottom:   0;
+    left:     0;
+}
+#Products .box::before {
+    background-color: var(--color);
+}
+#Products .box::after {
+    background-color: hsla(0,0%,0%,0.15);
+    transform: scaleY(0);
+    transform-origin: center bottom;
+    transition: transform 640ms cubic-bezier(0.165,  0.84,  0.44,  1);
+}
+#Products.is-active .box::after {
+    transform: scaleY(var(--instock));
+}
+
+
+/*  ------------------------------------------------------ Size */
+
+
+#Size {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows:    1fr;
+    grid-gap: 1rem;
+    padding:  calc(var(--menu-size) + 1rem) 1rem 1rem 1rem;
+    align-content: stretch;
+}
+#Size .box {
+    position: relative;
+    z-index:  1;
+
+    text-shadow: -1px -1px 0px var(--c--NobleBlack);
+    border:       0.25rem solid currentColor;
+    font-size:    3rem;
+    text-align:   center;
+
+    background-repeat: no-repeat;
+    background-size:   contain;
+}
+#Size .box.is-empty { opacity: 0.15; }
+
+.box.size-s { background-image: url(../art/size-s.svg); }
+.box.size-m { background-image: url(../art/size-m.svg); }
+.box.size-l { background-image: url(../art/size-l.svg); }
+
+
+/*  EOF styles */

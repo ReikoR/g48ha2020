@@ -1,0 +1,235 @@
+/*  ------------------------------------------------------ Define colors */
+
+:root {
+    /* Noble Palette */
+  --c--NobleBlack:            hsl(226, 15%, 12%);
+  --c--NobleWhite:            hsl(226, 27%, 90%);
+  --c--NobleNight:            hsl(226, 17%, 20%);
+  --c--NobleDay:              hsl(226, 32%, 75%);
+  --c--NobleSky:              hsl(204, 22%, 55%);
+  --c--NobleSea:              hsl(212, 34%, 29%);
+  --c--NobleSunset:           hsl(359, 28%, 82%);
+  --c--NobleAccent:           hsl(359, 54%, 53%);
+  --c--NobleAction:           hsl(359, 59%, 43%);
+    /* Ivory Palette */
+  --c--Ivory:                 hsl( 53, 66%, 80%);
+  --c--IvoryAccent:           hsl( 53, 70%, 76%);
+  --c--IvoryDark:             hsl(204,  4%, 22%);
+  --c--IvoryGray:             hsl(204,  8%, 38%);
+    /* Shadows */
+  --shadow-color--for-light-base: hsla(  0,  0%,   0%, 0.3 );
+  --light-shadow--for-light-base: hsla(  0,  0%,   0%, 0.05);
+  --shadow-color--for-dark-base:  hsla(  0,  0%, 100%, 0.2 );
+  --light-shadow--for-dark-base:  hsla(  0,  0%, 100%, 0.05);
+}
+
+
+/*  ------------------------------------------------------ Native font stack 2018 */
+
+:root {
+  --font-family--native-sans:
+       -apple-system,        /* Safari for macOS and iOS (San Francisco) */
+        system-ui,           /* macOS Chrome, Windows Chrome */
+        BlinkMacSystemFont,  /* Chrome < 56 for macOS (San Francisco) */
+       "Segoe UI",           /* Windows */
+        Roboto,              /* Android */
+        Oxygen,              /* KDE */
+        Ubuntu,              /* Ubuntu */
+        Cantarell,           /* GNOME */
+       "Fira Sans",          /* Firefox OS */
+       "Helvetica Neue",     /* old macOS */
+        Arial,               /* Basic web fallback */
+        sans-serif,
+       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* Emoji */
+}
+
+
+/*  ------------------------------------------------------ Define design system */
+
+:root {
+  --body-font-size: 2rem;
+  --font-weight:    400;
+  --line-height:    1.5;
+  --sx: 1.5rem;
+  --sy: 1.5rem;
+  --sp: var(--sy) var(--sx);
+}
+
+*, *:before, *:after { box-sizing: border-box; }
+html                 { height: 100%; }
+html, body           { margin: 0; padding: 0; }
+
+body {
+
+  --back-color: var(--c--NobleBlack);
+  --text-color: var(--c--NobleWhite);
+
+    background-color: var(--back-color);
+    color:            var(--text-color);
+    font-family:      var(--font-family--native-sans);
+    line-height:      var(--line-height);
+    font-weight:      var(--font-weight);
+    font-size:        var(--body-font-size);
+
+}
+
+.screen {
+    background-color: var(--back-color);
+    color:            var(--text-color);
+    height:   100vh;
+    width:    100%;
+    overflow: hidden;
+    display:  none;
+    
+    /* has menu */
+    padding-top: 10vw;
+}
+.screen.is-active { display: grid; }
+
+.box {
+    display: flex;
+    justify-content: center;
+    align-content:   center;
+    align-items:     center;
+}
+
+
+/*  ------------------------------------------------------ Nav menu */
+
+
+.el-menu {
+    position: fixed;
+    z-index:  2;
+    top:  0;
+    left: 0;
+
+    display: flex;
+    justify-content: flex-start;
+}
+.el-menu .button {
+    width:    10vw;
+    height:   10vw;
+    position: relative;
+    z-index:  0;
+
+    background-repeat: no-repeat;
+    background-size:   contain;
+    transform-origin:  center center;
+    transition: transform 240ms;
+    transition-timing-function: cubic-bezier(0.175,  0.885, 0.320, 1.275);
+}
+.el-menu .button::before,
+.el-menu .button::after {
+    content: '';
+    position: absolute;
+    z-index:  1;
+    top:      0;
+    right:    0;
+    bottom:   0;
+    left:     0;
+
+    background-repeat: no-repeat;
+    background-size:   contain;
+}
+.el-menu .button::before {
+    display: none;
+}
+.el-menu .button::after {
+    display: block;
+}
+
+.button.back         { background-image: url(../art/eye-1.svg); }
+.button.back::before { background-image: url(../art/eye-ball-1.svg); }
+.button.back::after  { background-image: url(../art/back.svg); }
+.button.help         { background-image: url(../art/eye-2.svg); }
+.button.help::before { background-image: url(../art/eye-ball-2.svg); }
+.button.help::after  { background-image: url(../art/help.svg); }
+.button.stop {
+    background-image: url(../art/eye-3.svg);
+    display: none;
+}
+
+/*  scene 1 */
+.say-hi .button.back {
+    transform: translate(100%, 100%) scale(2);
+}
+.say-hi .button.help {
+    transform: translate(125%, 100%) scale(2);
+}
+.say-hi .button.back::before,
+.say-hi .button.help::before {
+    display: block;
+}
+.say-hi .button.back::after,
+.say-hi .button.help::after {
+    display: none;
+}
+
+
+
+/*  ------------------------------------------------------ Screens */
+
+#Intro {
+    padding-top: 0;
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr min-content;
+    grid-template-areas: 'logo text' 'logo entrance';
+    align-content: stretch;
+}
+.el-intro-message {
+    grid-area: text;
+    padding:   var(--sp);
+}
+.el-intro-button {
+    grid-area: entrance;
+    padding:   var(--sp);
+
+  --back-color: var(--c--NobleAccent);
+  --text-color: var(--c--NobleWhite);
+    background-color: var(--back-color);
+    color:            var(--text-color);
+}
+
+#Products {
+    grid-template-columns: 1fr  1fr 1fr;
+    grid-template-rows:    1fr 1fr;
+    grid-gap: 1rem;
+    padding:  calc(10vw + 1rem) 1rem 1rem 1rem;
+    align-content: stretch;
+}
+.product {
+    display: flex;
+    justify-content: center;
+    align-content:   center;
+    align-items:     center;
+    text-align:      center;
+
+    position: relative;
+    z-index:  1;
+
+    text-shadow: -1px -1px 0px var(--c--NobleBlack);
+    border: 0.25rem solid currentColor;
+    font-size: 1.5em;
+  --instock: 1;
+}
+.product::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top:      0;
+    right:    0;
+    bottom:   0;
+    left:     0;
+    background-color: firebrick;
+    transform: scale(0);
+    transform-origin: center bottom;
+    transition: transform 120ms cubic-bezier(0.175,  0.885, 0.320, 1.275);
+}
+
+#Products.is-active .product::before {
+    --transform: scale(var(--instock));
+}
+
+
+/*  EOF styles */
