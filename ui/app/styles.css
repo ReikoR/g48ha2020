@@ -125,6 +125,9 @@ body {
 .el-menu.is-intro .menu-button.help::after {
     display: none;
 }
+
+/* remove smile
+
 .el-menu.is-intro::after {
     content: '';
     position: absolute;
@@ -143,7 +146,7 @@ body {
     transform: translate(150%, 300%) scale(2);
     opacity: 0.15;
 }
-
+*/
 
 
 /*  ------------------------------------------------------ Screens */
