@@ -96,6 +96,9 @@ const ui = {
 
         if (s.current === 'Launch') app.set(el.menu,'is-hidden')
         else app.unset(el.menu,'is-hidden')
+
+        if (s.current === 'Help') app.set(el.menu,'hide-help')
+        else app.unset(el.menu,'hide-help')
     },
     screen: id => {
         let prev = screen.current

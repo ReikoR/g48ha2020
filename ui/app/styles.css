@@ -323,5 +323,9 @@ body {
 .el-help-text {
     font-size: 4rem;
 }
+.el-about-illustration img {
+    max-width: 100%;
+    max-height: 40vh;
+}
 
 /*  EOF styles */
