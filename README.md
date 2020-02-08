@@ -7,7 +7,16 @@ Messages are transmitted in JSON. The base format is
 { "event": string, "data": any }
 ```
 
-After connecting to the server, it will immediately emit the following message for every machine:
+After connecting to the server, it will immediately emit the following message
+```
+{
+    "event": "info",
+    "data": {
+        "machineCount": integer
+    }
+}
+```
+and then the server will emit this message for every machine:
 ```
 {
   "event": "addMachine",
@@ -27,6 +36,17 @@ After connecting to the server, it will immediately emit the following message f
       "dispensing": boolean // is this product currently being dispensed
     }]
   }
+}
+```
+
+When the machine is turned on or off, it sends the following message and the server broadcasts it:
+```
+{
+    "event": "updateMachine",
+    "data": {
+        "id": string,
+        "online": boolean
+    }
 }
 ```
 
