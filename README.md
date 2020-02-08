@@ -13,6 +13,7 @@ After connecting to the server, it will immediately emit the following message f
   "event": "addMachine",
   "data": {
     "id": string,
+    "address": string,
     "lat": float,
     "lng": float,
     "online": boolean,
