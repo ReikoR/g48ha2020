@@ -23,6 +23,13 @@ const machines = {
 };
 
 wss.on('connection', ws => {
+    ws.send(JSON.stringify({
+        event: 'info',
+        data: {
+            machineCount: Object.values(machines).length
+        }
+    }));
+
     for (let id in machines) {
         ws.send(JSON.stringify({
             event: 'addMachine',
