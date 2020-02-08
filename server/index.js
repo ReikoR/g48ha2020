@@ -17,12 +17,48 @@ const products = {
 };
 
 const machines = {
-    M1: { id: 'M1', address: 'Physicum', lat: 58.366347, lng: 26.690936, online: true, products: [products.P1, products.P2, products.P3] },
+    M1: { id: 'M1', address: 'Physicum', lat: 58.366347, lng: 26.690936, online: false, products: [products.P1, products.P2, products.P3] },
     M2: { id: 'M2', address: 'Aparaaditehas', lat: 58.370533, lng: 26.716076, online: false, products: [products.P4, products.P5, products.P6] },
     M3: { id: 'M3', address: 'Barlova', lat: 58.369698, lng: 26.727855, online: false, products: [products.P7, products.P8, products.P9] }
 };
 
+function broadcast(event, data) {
+    for (let client of wss.clients) {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({ event, data }));
+        }
+    }
+}
+
+function updateMachine(data) {
+    if (!(data.id in machines)) {
+        throw new Error(`Machine '${data.id} not known`);
+    }
+
+    machines[data.id] = {
+        ...machines[data.id],
+        ...data
+    };
+
+    broadcast('updateMachine', data);
+}
+
+function updateProduct(data) {
+    if (!(data.id in products)) {
+        throw new Error(`Product '${data.id}' not known`);
+    }
+
+    products[data.id] = {
+        ...products[data.id],
+        ...data
+    };
+
+    broadcast('updateProduct', data);
+}
+
 wss.on('connection', ws => {
+    let machineId;
+
     ws.send(JSON.stringify({
         event: 'info',
         data: {
@@ -42,25 +78,29 @@ wss.on('connection', ws => {
             const { event, data } = JSON.parse(json);
 
             switch (event) {
+                case 'updateMachine':
+                    updateMachine(data);
+
+                    if (data.online) {
+                        machineId = data.id;
+                    }
+                    break;
                 case 'updateProduct':
-                    if (!(data.id in products)) {
-                        throw new Error(`Product '${data.id}' not known`);
-                    }
-
-                    products[data.id] = {
-                        ...products[data.id],
-                        ...data
-                    };
-
-                    for (let client of wss.clients) {
-                        if (client.readyState === WebSocket.OPEN) {
-                            client.send(json);
-                        }
-                    }
+                    updateProduct(data);
                     break;
             }
         } catch (err) {
             console.log(err);
+        }
+    });
+
+    ws.on('close', () => {
+        if (machineId) {
+            try {
+                updateMachine({ id: machineId, online: false });
+            } catch (err) {
+                console.log(err);
+            }
         }
     });
 });
