@@ -9,15 +9,6 @@
 
     <title>LVM-1</title>
 
-    <!-- ===================================== BOOT -->
-
-    <style>
-        html       { margin:0; padding:0; }
-        body       { margin:0; padding:0; width:100%; height:auto; }
-        img,svg,hr { margin:0; border:0; max-width:100%; }
-        pre        { overflow:auto; }
-    </style>
-
     <!-- ===================================== DESIGN -->
 
     <link
@@ -26,7 +17,6 @@
 
 </head>
 <body>
-
 
 <!-- ========================================= Menu -->
 
@@ -53,7 +43,7 @@
 
 <!-- ========================================= Size -->
 
-<article id="Size" class="screen">
+<article id="Setup" class="screen">
     <div class="box size-s">
         <div class="label">50 ml</div>
     </div>
@@ -65,14 +55,38 @@
     </div>
 </article>
 
-<!-- ========================================= APP (temporary here) -->
+<!-- ========================================= Action -->
+
+<article id="Action" class="screen">
+    <div class="box el-hold-the-button">
+        Hold the button
+    </div>
+    <div class="menu-button el-stop-the-button"></div>
+</article>
+
+<!-- ========================================= Thanks -->
+
+<article id="Thanks" class="screen">
+    <div class="box el-thank-you">
+        Thank You!
+    </div>
+</article>
+
+<!-- ========================================= Help -->
+
+<article id="Help" class="screen">
+    <div class="box el-help-text">
+        Help & About
+    </div>
+</article>
+
+<!-- ========================================= API (temporary here) -->
 
 <script src="app/ui.js"></script>
 <script>
 
     const api = {
 
-        // setup liquids
         setupProducts: (
              data = [
                  { id:1, vol:0.90, label:'Shower Gel' },
@@ -84,12 +98,12 @@
              ]
             ) => app.updateProducts(data),
 
-        // start the app
-        //run: ui.doHome,
-        run: ui.doActivate,
+        updateProduct: ( data = {id:1, vol:1.00} ) => app.updateProduct(data),
+
+        run: ui.doHome
 
     }
-    
+
     api.setupProducts()
     api.run()
 
