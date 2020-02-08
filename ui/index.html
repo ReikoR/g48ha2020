@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- appseed 2020.1.30 -->
+
+    <!-- ===================================== HEAD CONTENT -->
+
+
+    <title>LVM-1</title>
+
+
+    <!-- ===================================== BOOT -->
+
+
+    <style>
+        html       { margin:0; padding:0; }
+        body       { margin:0; padding:0; width:100%; height:auto; }
+        img,svg,hr { margin:0; border:0; max-width:100%; }
+        pre        { overflow:auto; }
+    </style>
+
+
+    <!-- ===================================== DESIGN -->
+
+
+    <link
+        href="app/styles.css?v2020.2.8"
+        rel="stylesheet" type="text/css">
+
+
+    <!-- ===================================== APP -->
+
+
+</head>
+<body>
+
+
+<nav class="el-menu is-intro">
+    <div class="menu-button back"></div>
+    <div class="menu-button help"></div>
+    <div class="menu-button stop"></div>
+</nav>
+
+
+<article id="Intro" class="screen is-active">
+
+    <div class="box el-intro-message">
+        <span>Hi, I`m the Liquid Vending Machine LVM-1</span>
+    </div>
+
+    <div class="box el-intro-button">
+        <span>Activate</span>
+    </div>
+
+</article>
+
+
+<article id="Products" class="screen">
+    <div class="box" style="--instock:0.9">Shower Gel</div>
+    <div class="box" style="--instock:0.75">Liquid Soap</div>
+    <div class="box" style="--instock:0.8">Cleaning Liquid</div>
+    <div class="box" style="--instock:0.25">Honey</div>
+    <div class="box is-empty" style="--instock:0">Is empty</div>
+    <div class="box is-empty" style="--instock:0.1">Is empty</div>
+</article>
+
+
+<article id="Size" class="screen">
+    <div class="box size-s">
+        <div class="label">50 ml</div>
+    </div>
+    <div class="box size-m">
+        <div class="label">100 ml</div>
+    </div>
+    <div class="box size-l">
+        <div class="label">250 ml</div>
+    </div>
+</article>
+
+<script>
+
+    const el = {
+        menu:        document.querySelector('.el-menu'),
+        menuBack:    document.querySelector('.el-menu .back'),
+        menuHelp:    document.querySelector('.el-menu .help'),
+        activator:   document.querySelector('.el-intro-button'),
+        screens:     [...document.querySelectorAll('.screen')],
+        screenId:    id=>document.querySelector('#'+id),
+        products:    [...document.querySelectorAll('#Products .box')]
+
+    }
+
+    const app = {
+        set:   (el,classname) => el.classList.add(classname),
+        unset: (el,classname) => el.classList.remove(classname)
+    }
+
+    const ui = {
+        doActivate: f => {
+            app.unset(el.menu,'is-intro')
+            ui.screen('Products')
+        },
+        doHome: f => {
+            app.set(el.menu,'is-intro')
+            ui.screen('Intro')
+        },
+        doSize: f => {
+              ui.screen('Size')
+        },
+        screen: id => {
+            el.screens.map(el=>app.unset(el,'is-active'))
+            app.set(el.screenId(id),'is-active')
+        }
+    }
+
+    el.activator.addEventListener('click', ui.doActivate)
+    el.menuBack.addEventListener('click', ui.doHome)
+    el.products.map(el=>el.addEventListener('click', ui.doSize))
+</script>
+
+</body>
+</html>
