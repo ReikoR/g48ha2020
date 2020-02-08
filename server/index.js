@@ -1,5 +1,10 @@
+const express = require('express');
+const http = require('http');
 const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 });
+
+const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
 const products = {
     // Physicum
@@ -88,6 +93,10 @@ wss.on('connection', ws => {
                 case 'updateProduct':
                     updateProduct(data);
                     break;
+                case 'start':
+                case 'end':
+                    broadcast(event, data);
+                    break;
             }
         } catch (err) {
             console.log(err);
@@ -104,3 +113,10 @@ wss.on('connection', ws => {
         }
     });
 });
+
+// Static files
+app.use('/web', express.static('../web'));
+app.use('/ui', express.static('../ui'));
+
+// HTTP server
+server.listen(8080);
