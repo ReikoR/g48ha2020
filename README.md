@@ -1,3 +1,31 @@
+## Machine interface
+
+http://ec2-13-53-129-204.eu-north-1.compute.amazonaws.com:8080/ui/
+
+When a user starts using the machine, the machine should send
+```
+{
+  "event": "start",
+  "data": {
+    "id": string // machine id
+  }
+}
+```
+
+When a user finishes using the machine, the machine should send
+```
+{
+  "event": "end",
+  "data": {
+    "id": string // machine id
+  }
+}
+```
+
+## Web app
+
+http://ec2-13-53-129-204.eu-north-1.compute.amazonaws.com:8080/web/
+
 ## Server
 
 Websocket server URL is `ws://ec2-13-53-129-204.eu-north-1.compute.amazonaws.com:8080`.
@@ -7,7 +35,16 @@ Messages are transmitted in JSON. The base format is
 { "event": string, "data": any }
 ```
 
-After connecting to the server, it will immediately emit the following message for every machine:
+After connecting to the server, it will immediately emit the following message
+```
+{
+    "event": "info",
+    "data": {
+        "machineCount": integer
+    }
+}
+```
+and then the server will emit this message for every machine:
 ```
 {
   "event": "addMachine",
@@ -27,6 +64,17 @@ After connecting to the server, it will immediately emit the following message f
       "dispensing": boolean // is this product currently being dispensed
     }]
   }
+}
+```
+
+When the machine is turned on or off, it sends the following message and the server broadcasts it:
+```
+{
+    "event": "updateMachine",
+    "data": {
+        "id": string,
+        "online": boolean
+    }
 }
 ```
 
