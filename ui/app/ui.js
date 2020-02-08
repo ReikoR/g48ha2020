@@ -103,14 +103,18 @@ const ui = {
 
         if (s.current === 'Help') app.set(el.menu,'hide-help')
         else app.unset(el.menu,'hide-help')
+
+        if (s.current === 'Action' || s.current === 'Pump')
+             app.set(el.screenId('PumpNumbers'),'is-active')
+        else app.unset(el.screenId('PumpNumbers'),'is-active')
     },
     screen: id => {
         let prev = screen.current
         screen.current = id
         if ( prev !== id ) screen.prev = prev
-        ui.updateMenu()
         el.screens.map(el=>app.unset(el,'is-active'))
         app.set(el.screenId(id),'is-active')
+        ui.updateMenu()
     }
 }
 

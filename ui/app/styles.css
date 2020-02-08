@@ -357,6 +357,11 @@ body {
 
 #Pump {
     padding-top: 1rem;
+
+    display: flex;
+    justify-content: center;
+    align-content:   center;
+    align-items:     center;
 }
 .el-machine {
   --size: 0.7;
@@ -448,5 +453,26 @@ body {
         opacity: 0.1;
     }
 }
+
+#PumpNumbers {
+    pointer-events: none;
+}
+.el-gas-numbers {
+    position: absolute;
+    z-index:  1;
+    bottom:   12%;
+    left:     10vw;
+    color:    hsl( 42, 79%, 53%);
+    font-weight: bolder;
+    font-size: 15vw;
+    min-width: 30vw;
+    line-height:  1;
+    text-align: right;
+    text-shadow: -1px -1px 0 black, 1px 1px 0 black, -2px -2px 0 black, 2px 2px 0 black;
+}
+.el-gas-numbers .ml {
+    font-size: 0.32em;
+}
+
 
 /*  EOF styles */
