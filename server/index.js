@@ -93,6 +93,10 @@ wss.on('connection', ws => {
                 case 'updateProduct':
                     updateProduct(data);
                     break;
+                case 'start':
+                case 'end':
+                    broadcast(event, data);
+                    break;
             }
         } catch (err) {
             console.log(err);
