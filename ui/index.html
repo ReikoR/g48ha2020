@@ -7,7 +7,7 @@
 
     <!-- ===================================== HEAD CONTENT -->
 
-    <title>LVM-1</title>
+    <title>RVM-1</title>
 
     <!-- ===================================== DESIGN -->
 
@@ -40,10 +40,10 @@
 
 <article id="Intro" class="screen">
     <div class="box el-intro-message">
-        Hi, I`m the Liquid Vending Machine LVM-1
+        Hi, I`m the Refilling Vending Machine RVM-1
     </div>
     <div class="box el-intro-button">
-        Activate
+        Start
     </div>
 </article>
 
@@ -74,11 +74,23 @@
     <div class="menu-button el-stop-the-button"></div>
 </article>
 
+<!-- ========================================= Pump -->
+
+<article id="Pump" class="screen">
+    <div class="el-machine">
+        <div class="el-pump"></div>
+        <div class="el-bubbles"></div>
+    </div>
+</article>
+
 <!-- ========================================= Thanks -->
 
 <article id="Thanks" class="screen">
     <div class="box el-thank-you">
         Thank You!
+    </div>
+    <div class="box el-feedback">
+        About
     </div>
 </article>
 
@@ -86,14 +98,14 @@
 
 <article id="Help" class="screen">
     <div class="box el-help-text">
-        About
+        About ( in brief )
     </div>
     <div class="box el-about-illustration">
         <img src="art/about.svg" alt="Infographics">
     </div>
 </article>
 
-<!-- ========================================= API (temporary here) -->
+<!-- ========================================= JS -->
 
 <script src="app/ui.js"></script>
 <script src="app/web.js"></script>
@@ -115,8 +127,7 @@
         updateProduct: ( data = {id:1, vol:1.00} ) => app.updateProduct(data),
 
         run: f => {
-            ui.screen('Launch')
-            //app.goFullScreen()
+            ui.screen('Launch')//ui.screen('Launch')
         }
 
     }

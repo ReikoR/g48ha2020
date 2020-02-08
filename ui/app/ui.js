@@ -9,11 +9,12 @@ const el = {
     screenId:           id=>document.querySelector('#'+id),
     productsContainer:  document.querySelector('#Products'),
     sizes:              [...document.querySelectorAll('#Setup .box')],
-    showSuccess:        [document.querySelector('.el-hold-the-button'),
-                         document.querySelector('.el-stop-the-button')],
+    showSuccess:        [document.querySelector('.el-machine')],
     goHome:             [document.querySelector('.el-thank-you')],
-    goProduct:          [document.querySelector('.el-help-text'),
-                         document.querySelector('.el-thank-you')]
+    goProduct:          [/*document.querySelector('.el-machine')*/],
+    goAbout:            [document.querySelector('.el-feedback')],
+    goPump:             [document.querySelector('.el-hold-the-button'),
+                         document.querySelector('.el-stop-the-button')]
 }
 
 let screen = {
@@ -87,6 +88,9 @@ const ui = {
     doHelp: f => {
           ui.screen('Help')
     },
+    doPump: f => {
+          ui.screen('Pump')
+    },
     back: f => {
         ui.screen('Intro')
     },
@@ -94,7 +98,7 @@ const ui = {
         if (s.current === 'Intro') app.set(el.menu,'is-intro')
         else app.unset(el.menu,'is-intro')
 
-        if (s.current === 'Launch') app.set(el.menu,'is-hidden')
+        if (s.current === 'Launch' || s.current === 'Thanks' || s.current === 'Pump') app.set(el.menu,'is-hidden')
         else app.unset(el.menu,'is-hidden')
 
         if (s.current === 'Help') app.set(el.menu,'hide-help')
@@ -119,6 +123,8 @@ el.activator.addEventListener('click', ui.doActivate)
 el.menuBack.addEventListener('click', ui.back)
 el.menuHelp.addEventListener('click', ui.doHelp)
 el.goProduct.map(el=>el.addEventListener('click', ui.doActivate))
+el.goPump.map(el=>el.addEventListener('click', ui.doPump))
+el.goAbout.map(el=>el.addEventListener('click', ui.doHelp))
 el.showSuccess.map(el=>el.addEventListener('click', ui.doThanks))
 el.goHome.map(el=>el.addEventListener('click', ui.doHome))
 el.sizes.map(el=>el.addEventListener('click', ui.doAction))
