@@ -1,5 +1,6 @@
 
 const el = {
+    run:                document.querySelector('.el-launch-app'),
     menu:               document.querySelector('.el-menu'),
     menuBack:           document.querySelector('.el-menu .back'),
     menuHelp:           document.querySelector('.el-menu .help'),
@@ -43,6 +44,27 @@ const app = {
     updateProducts: data => {
         el.productsContainer.innerHTML = ''
         data.map( o=>app.createProduct(o) )
+    },
+
+    /* View in fullscreen */
+    goFullScreen: f => {
+
+        // Find the right method, call on correct element
+        function launchIntoFullscreen(element) {
+          if(element.requestFullscreen) {
+            element.requestFullscreen();
+          } else if(element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+          } else if(element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen();
+          } else if(element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+          }
+        }
+
+        // Launch fullscreen for browsers that support it!
+        launchIntoFullscreen(document.documentElement); // the whole page
+
     }
 }
 
@@ -71,6 +93,9 @@ const ui = {
     updateMenu: (s = screen) => {
         if (s.current === 'Intro') app.set(el.menu,'is-intro')
         else app.unset(el.menu,'is-intro')
+
+        if (s.current === 'Launch') app.set(el.menu,'is-hidden')
+        else app.unset(el.menu,'is-hidden')
     },
     screen: id => {
         let prev = screen.current
@@ -82,6 +107,11 @@ const ui = {
     }
 }
 
+el.run.addEventListener('click', f => {
+    app.goFullScreen()
+    ui.doHome()
+})
+//el.run.addEventListener('click', )
 el.activator.addEventListener('click', ui.doActivate)
 el.menuBack.addEventListener('click', ui.back)
 el.menuHelp.addEventListener('click', ui.doHelp)

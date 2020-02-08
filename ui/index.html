@@ -26,6 +26,16 @@
     <div class="menu-button stop"></div>
 </nav>
 
+
+<!-- ========================================= Launch -->
+
+<article id="Launch" class="screen">
+    <div class="box el-launch-app">
+        Run
+    </div>
+</article>
+
+
 <!-- ========================================= Intro -->
 
 <article id="Intro" class="screen">
@@ -83,6 +93,7 @@
 <!-- ========================================= API (temporary here) -->
 
 <script src="app/ui.js"></script>
+<script src="app/web.js"></script>
 <script>
 
     const api = {
@@ -100,12 +111,16 @@
 
         updateProduct: ( data = {id:1, vol:1.00} ) => app.updateProduct(data),
 
-        run: ui.doHome
+        run: f => {
+            ui.screen('Launch')
+            //app.goFullScreen()
+        }
 
     }
 
     api.setupProducts()
     api.run()
+    web.connect()
 
 </script>
 

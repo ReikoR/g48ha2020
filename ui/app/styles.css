@@ -68,6 +68,7 @@ body {
     display: flex;
     justify-content: flex-start;
 }
+.el-menu.is-hidden { display: none; }
 
 .menu-button {
     width:    var(--menu-size);
@@ -161,7 +162,7 @@ body {
     position: fixed;
     z-index:  1;
 
-    padding:   calc( 2*var(--menu-size) + 1rem) 1rem 1rem 1rem;
+    padding:   calc( 1*var(--menu-size) + 1rem) 1rem 1rem 1rem;
 }
 .screen:not(.is-active) {
     transform: translateX(100%);
@@ -177,15 +178,25 @@ body {
     grid-template-rows: 1fr min-content;
     grid-template-areas: 'logo text' 'logo entrance';
     align-content: stretch;
+    padding-top: 1rem;
 }
 .el-intro-message {
     grid-area: text;
-    font-size:3rem;
+    font-size:4rem;
 }
 .el-intro-button {
     grid-area: entrance;
     background-color: hsl(359, 54%, 53%);
     font-size: 4rem;
+}
+
+.el-launch-app {
+    background-color: hsl(359, 54%, 53%);
+    font-size: 4rem;
+    width: 16rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    
 }
 
 
