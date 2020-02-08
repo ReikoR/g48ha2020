@@ -8,9 +8,9 @@ const products = {
 };
 
 const machines = {
-    M1: { id: 'M1', lat: 52, lng: 22, online: true, products: [products.P1, products.P2, products.P3] },
-    M2: { id: 'M2', lat: 52.2, lng: 22.1, online: false, products: [] },
-    M3: { id: 'M3', lat: 51.3, lng: 21.6, online: false, products: [] }
+    M1: { id: 'M1', address: 'Physicum', lat: 58.366347, lng: 26.690936, online: true, products: [products.P1, products.P2, products.P3] },
+    M2: { id: 'M2', address: 'Aparaaditehas', lat: 58.370533, lng: 26.716076, online: false, products: [] },
+    M3: { id: 'M3', address: 'Barlova', lat: 58.369698, lng: 26.727855, online: false, products: [] }
 };
 
 wss.on('connection', ws => {
