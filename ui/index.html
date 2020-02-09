@@ -71,13 +71,13 @@
 <article id="Prepare" class="screen">
     <div class="box el-confirm-your-choice">
         <div>
-            <span class="title">Confirmation screen</span><br>
-            Selected liquid is good.<br>
-            Made by natural ingredients.<br>
-            <span class="text-color-accent">Dont drink.</span> Wash your dish.<br>
-            <br><br>
-            Please, confirm or cancel.
+            Make sure your refillable<br>
+            <span class="text-color-accent">container is clean</span> and<br>
+            <span class="text-color-accent">place it under</span> the dispenser.<br>
         </div>
+    </div>
+    <div class="box el-confirmation-button">
+        Continue
     </div>
 </article>
 
@@ -86,6 +86,9 @@
 <article id="Action" class="screen">
     <div class="box el-hold-the-button">
         Hold the button
+    </div>
+    <div class="box el-finish-pump">
+        Finish
     </div>
 </article>
 
@@ -100,14 +103,14 @@
 
 <!-- ========================================= Logo -->
 
-<article id="PumpNumbers" class="screen">
+<article id="PumpCounter" class="screen">
     <div class="el-gas-numbers">
         <div class="volume">
             <span class="gas-volume-value">240</span>
             <span class="ml">ml</span>
         </div>
         <div class="summ">
-            <span class="gas-volume-value">1.32</span>
+            <span class="gas-price-value">1.32</span>
             <span class="ml">€</span>
         </div>
     </div>
@@ -160,7 +163,7 @@
 
         run: f => {
             api.setupProducts()
-            app.start('Launch')
+            app.run('Launch')
             if (f!=='offline') web.connect()
         },
 

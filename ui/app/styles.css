@@ -138,7 +138,7 @@ body {
 .el-menu.close-only .menu-button.back { display: none;  }
 .el-menu.close-only .menu-button.help { display: none;  }
 .el-menu.close-only .menu-button.stop { display: block; }
-.el-menu.close-only .menu-button.good { display: block; }
+/*.el-menu.close-only .menu-button.good { display: block; }*/
 
 /*  Intro buttons */
 
@@ -345,18 +345,47 @@ body {
 
 /*  ------------------------------------------------------ Prepare */
 
+#Prepare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows:    1fr min-content;
+    grid-template-areas:  'text text' 'x button'
+}
+.el-confirm-your-choice { grid-column: text;   }
+.el-confirmation-button { grid-column: button; }
+
 .el-confirm-your-choice {
     font-size: 3rem;
 }
 .el-confirm-your-choice .title {
     font-size: 4rem;
 }
+.el-confirmation-button {
+    background-color: hsl(359, 54%, 53%);
+    font-size: 3rem;
+    padding:   1rem;
+}
 
 /*  ------------------------------------------------------ Action */
 
+#Action {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows:    1fr min-content;
+    grid-template-areas:  'text text' 'x button'
+}
+.el-hold-the-button { grid-column: text;   }
+.el-finish-pump     { grid-column: button; }
 
+.el-finish-pump {
+    background-color: hsl(359, 54%, 53%);
+    font-size: 3rem;
+    padding:   1rem;
+}
 .el-hold-the-button {
     font-size: 4rem;
+    align-content: flex-start;
+    align-items:   flex-start;
 }
 .el-stop-the-button {
     margin: var(--menu-size) auto 0 auto;
@@ -492,7 +521,7 @@ body {
     }
 }
 
-#PumpNumbers {
+#PumpCounter {
     pointer-events: none;
 }
 .el-gas-numbers {
@@ -504,12 +533,18 @@ body {
     font-weight: bolder;
     font-size: 15vw;
     min-width: 30vw;
+    max-width: 80vw;
+    overflow: hidden;
+    white-space: nowrap;
     line-height:  1;
     text-align: right;
     text-shadow: -1px -1px 0 black, 1px 1px 0 black, -2px -2px 0 black, 2px 2px 0 black;
 }
 .el-gas-numbers .ml {
     font-size: 0.32em;
+    min-width: 6rem;
+    display: inline-block;
+    text-align: left;
 }
 
 

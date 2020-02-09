@@ -1,3 +1,5 @@
+/* DOM manipulations */
+
 const dom = {
     ad: (el,classname) => el.classList.add(classname),
     rm: (el,classname) => el.classList.remove(classname),
@@ -5,6 +7,7 @@ const dom = {
     f:  (path) => document.querySelector(path),
     ff: (path) => [...document.querySelectorAll(path)],
     fid:  (id) => document.querySelector('#'+id),
+    txt:  (el,txt) => { el.innerHTML = txt + '' },
 
  // dom api
 
@@ -36,26 +39,50 @@ const dom = {
 
 }
 
+/* Screens & Screen components */
+
 const ui = {
-    getReady: f => {
-        ui.goScreen('Launch')
+
+    screen: {
+        current: '',
+        prev: ''
     },
-    launchApp: f => {
-        app.goFullScreen()
-        ui.goScreen('Intro')
-        api.messageOfUserStart()
+
+    counters: {
+        elVolume: dom.f('.gas-volume-value'),
+        elPrice:  dom.f('.gas-price-value'),
+        volume: 0,
+        price:  0,
+        updateVolume: x => {
+            ui.counters.volume = x
+            dom.txt(ui.counters.elVolume, ui.counters.volume.toFixed(0))
+        },
+        updatePrice:  x => {
+            ui.counters.price  = x
+            dom.txt(ui.counters.elPrice,  ui.counters.price.toFixed(2))
+        },
+        reset: f => {
+            ui.counters.updateVolume(0)
+            ui.counters.updatePrice(0)
+        }
     },
+
     menuBackButton: f => {
-        if (app.screen.current === 'Products')
+        if (ui.screen.current === 'Products')
             ui.goScreen('Intro')
         else
             ui.goScreen('Products')
     },
-    menuHelpButton: f => ui.goScreen('Help'),
-    menuStopButton: f => ui.goScreen('Products'),
 
-    confirmationButton: f => {
-        if (app.screen.current === 'Prepare')
+    menuHelpButton: f => ui.goScreen('Help'),
+
+    menuStopButton: f => {
+        ui.goScreen('Products')
+        ui.counters.reset()
+    },
+
+    confirmationButton: f => {    // DEPRECATED
+        if (ui.screen.current === 'Prepare')
             ui.goScreen('Action')
         else
             app.confirmToCompleteOrder()
@@ -64,12 +91,14 @@ const ui = {
     clickOnProduct: f => {
         ui.goScreen('Prepare')
     },
+
     goScreen: id => {
-        if (app.screen.current)
-            ui.deactivateScreenFx(app.screen.current)
+        if (ui.screen.current)
+            ui.deactivateScreenFx(ui.screen.current)
         ui.setCurrentScreen(id)
         ui.activateScreenFx(id)
     },
+
     activateScreenFx: id => {
 
      // Menu state
@@ -96,49 +125,63 @@ const ui = {
         else
             dom.rm(menu,'hide-help')
 
-     // Volume Digits
+     // Counter appears
+
         if (id === 'Action' || id === 'Pump')
-            dom.ad(dom.fid('PumpNumbers'),'is-active')
+            dom.ad(dom.fid('PumpCounter'),'is-active')
         else
-            dom.rm(dom.fid('PumpNumbers'),'is-active')
+            dom.rm(dom.fid('PumpCounter'),'is-active')
 
     },
+
     deactivateScreenFx: id => {
         if (id !== 'Intro') dom.rm(dom.f('.el-menu'),'is-intro')
     },
+
     setCurrentScreen: id => {
      // Screen log
-        let prev = app.screen.current
-        app.screen.current = id
-        if ( prev !== id ) app.screen.prev = prev
+        let prev = ui.screen.current
+        ui.screen.current = id
+        if ( prev !== id ) ui.screen.prev = prev
      // Active class
         dom.ff('.screen').map( el=>dom.rm(el,'is-active') )
         dom.ad( dom.fid(id), 'is-active' )
     }
 
-    
 }
+
+/* UI Logic */
 
 const app = {
 
     load: f => {
         app.EventMapper()
     },
-    
-    start: (id='Launch') => ui.goScreen(id),
+
+    run: (id='Launch') => ui.goScreen(id),
+
+    play: f => {
+        app.goFullScreen()
+        ui.goScreen('Intro')
+    },
+
+    start: f => {
+        api.messageOfUserStart()
+        ui.counters.reset()
+        app.home()
+    },
 
     home: f => ui.goScreen('Products'),
-
-    screen: {
-        current: '',
-        prev: ''
-    },
 
     EventMapper: f => {
         let story = [
             {
                 s: '.el-launch-app',
-                f: ui.launchApp
+                f: app.play
+            },
+            {
+                s: '.el-intro-button',
+                f: app.start
             },
             {
                 s: '.el-menu .back',
@@ -149,7 +192,7 @@ const app = {
                 f: ui.menuHelpButton
             },
             {
-                s: '.el-menu .good',
+                s: '.el-menu .good',    // DEPRECATED
                 f: ui.confirmationButton
             },
             {
@@ -157,8 +200,12 @@ const app = {
                 f: ui.menuStopButton
             },
             {
-                s: '.el-intro-button',
-                f: app.home
+                s: '.el-confirmation-button',
+                f: f => ui.goScreen('Action')
+            },
+            {
+                s: '.el-finish-pump',
+                f: app.confirmToCompleteOrder
             },
             {
                 s: '.el-about-illustration',
@@ -170,7 +217,7 @@ const app = {
             },
             {
                 s: '.el-hold-the-button',
-                f: f => ui.goScreen('Pump')
+                f: app.refillingImitation
             },
             {
                 s: '.el-machine',
@@ -178,6 +225,19 @@ const app = {
             }
         ]
         let start = dom.findAndMapEvents(story)
+    },
+
+    refillingImitation: f => {
+        const randomVolumer = f => {
+            if ( ui.screen.current !== 'Pump' ) return false
+            let d = Math.round(Math.random()*10)
+            let p = Math.round(Math.random()*10) / 100
+            ui.counters.updateVolume( 1*ui.counters.volume + d )
+            ui.counters.updatePrice( 1*ui.counters.price   + p )
+            setTimeout( randomVolumer, 250 )
+        }
+        ui.goScreen('Pump')
+        randomVolumer()
     },
 
     goFullScreen: f => {
@@ -202,6 +262,7 @@ const app = {
     confirmToCompleteOrder: f => {
         ui.goScreen('Thanks')
         api.messageOfConfirmedAction()
+        ui.counters.reset()
     }
 
 }
