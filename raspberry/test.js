@@ -7,7 +7,7 @@ const ws = new WebSocket(process.env.SERVER_URL, {
     reconnectInterval: 3
 });
 
-const state = { inUse: false, dispensingProduct: null };
+const state = { inUse: true, filled: 0, paid: 0, dispensingProduct: null };
 
 // Serial
 const serial = new SerialPort(process.env.SERIAL_PATH);
@@ -26,6 +26,8 @@ parser.on('data', data => {
         return;
     }
 
+    console.log(data);
+
     const btnIndex = match[1];
     const btnPressed = !parseInt(match[2]);
     const productId = process.env[`PRODUCT_${btnIndex}_ID`];
@@ -34,6 +36,9 @@ parser.on('data', data => {
         state.dispensingProduct = state.machine.products.find(
             product => product.id === productId
         );
+
+        state.dispensingProduct.filled = 0;
+        state.dispensingProduct.paid = 0;
 
         ws.send(JSON.stringify({
             event: 'updateProduct',
@@ -110,27 +115,21 @@ ws.on('message', json => {
         case 'addMachine':
             if (data.id === process.env.MACHINE_ID) {
                 state.machine = data;
-
-                for (let product of state.machine.products) {
-                    product.filled = 0;
-                    product.paid = 0;
-                }
             }
             break;
         case 'start':
             if (data.id === process.env.MACHINE_ID) {
                 state.inUse = true;
+                state.filled = 0;
+                state.paid = 0;
                 state.dispensingProduct = null;
-
-                for (let product of state.machine.products) {
-                    product.filled = 0;
-                    product.paid = 0;
-                }
             }
             break;
         case 'end':
             if (data.id === process.env.MACHINE_ID) {
                 state.inUse = false;
+                state.filled = 0;
+                state.paid = 0;
                 state.dispensingProduct = null;
             }
             break;
