@@ -57,6 +57,8 @@ body {
 
 .text-color-accent {
     color: hsl(204, 22%, 55%);
+    color: hsl(184, 61%, 24%);
+    font-weight: bolder;
 }
 
 
@@ -230,13 +232,40 @@ body {
     font-size: 4rem;
 }
 
+.el-welcome-logo {
+    width: 8rem;
+    height: auto;
+}
+.el-welcome-robot .title {
+    color: hsl(184, 61%, 24%);
+    font-size: 6rem;
+    font-weight: bolder;
+    text-shadow: -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black, 1px 1px 0 black, -2px -2px 0 black, 2px 2px 0 black, 2px -2px 0 black, -2px 2px 0 black;
+}
+.el-ready-app {
+    background-color: hsl(184, 61%, 24%);
+    font-size: 2rem;
+    max-width: 24rem;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+    padding: 0.5rem 2rem;
+}
 .el-launch-app {
     background-color: hsl(359, 54%, 53%);
-    font-size: 3rem;
+    font-size: 2rem;
     max-width: 24rem;
     margin: 0 auto;
     padding: 0.5rem 2rem;
-    
+}
+
+#Launch:not(.is-ready) .el-launch-app {
+    opacity: 0;
+}
+#Launch.is-ready .el-launch-app {
+    opacity: 1;
+}
+#Launch.is-ready .el-ready-app {
+    display: none;
 }
 
 

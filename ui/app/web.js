@@ -29,7 +29,6 @@ const web = {
  // Functions
 
     readProducts: dataArray => {
-
         if (!dataArray.length) return false
         /*app.updateProducts
 
@@ -46,6 +45,7 @@ const web = {
     },
 
     userStartsUsingTheMachine: f => {
+        /* DEPRECATED
         let msg = {
             event: 'start',
             data: {
@@ -54,6 +54,7 @@ const web = {
         }
         console.log('MSG: userStatsUsingTheMachine', msg)
         web.sendMessage(msg)
+        */
         api.waitForServerResponce()
     },
 
@@ -67,7 +68,7 @@ const web = {
         console.log('MSG: userFinishedOrder', msg)
         web.sendMessage(msg)
     },
-
+/*
     listenForWelcome: f => {
         web.socket.onmessage = function (event) {
             let msg = JSON.parse(event.data)
@@ -75,6 +76,17 @@ const web = {
                 msg.event === 'updateMachine' &&
                 msg.data.id === web.thisMachineID &&
                 msg.data.online
+                )
+                api.confirmedServerResponce()
+        }
+    },
+*/
+    listenForWelcome: f => {
+        web.socket.onmessage = function (event) {
+            let msg = JSON.parse(event.data)
+            if (
+                msg.event === 'start' &&
+                msg.data.id === web.thisMachineID
                 )
                 api.confirmedServerResponce()
         }

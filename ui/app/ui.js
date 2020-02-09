@@ -74,7 +74,8 @@ const ui = {
         price:  0,
         updateVolume: x => {
             ui.counters.volume = x
-            dom.txt(ui.counters.elVolume, ui.counters.volume.toFixed(0))
+            let mililitres = ui.counters.volume * 1000
+            dom.txt(ui.counters.elVolume, mililitres.toFixed(0))
         },
         updatePrice:  x => {
             ui.counters.price  = x
@@ -227,13 +228,18 @@ const app = {
 
     run: (id='Launch') => ui.goScreen(id),
 
+    getReady: f => {
+        if (api.fullscreen) app.goFullScreen()
+        api.messageOfConfirmedAction()
+        dom.ad(dom.fid('Launch'), 'is-ready')
+    },
+
     play: f => {
-        //app.goFullScreen()
+        api.messageOfUserStart()
         ui.goScreen('Intro')
     },
 
     start: f => {
-        api.messageOfUserStart()
         ui.counters.reset()
         app.home()
     },
@@ -242,6 +248,10 @@ const app = {
 
     EventMapper: f => {
         let story = [
+            {
+                s: '.el-ready-app',
+                f: app.getReady
+            },
             {
                 s: '.el-launch-app',
                 f: app.play

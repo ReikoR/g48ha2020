@@ -31,8 +31,17 @@
 <!-- ========================================= Launch -->
 
 <article id="Launch" class="screen">
+    <div class="box el-welcome-robot">
+        <div>
+        <div class="box"><img src="art/Refill-Logo.svg" alt="" class="el-welcome-logo"></div>
+        <div class="title">Refill</div>
+        </div>
+    </div>
+    <div class="box el-ready-app">
+        Get ready
+    </div>
     <div class="box el-launch-app">
-        Launch App
+        Start
     </div>
 </article>
 
@@ -44,7 +53,7 @@
         <div>Hi, I`m the <span class="text-color-accent">Refilling Vending Machine</span> RVM-1</div>
     </div>
     <div class="box el-intro-button">
-        Start
+        Use Card
     </div>
 </article>
 
@@ -162,7 +171,10 @@
     const api = {
 
         offline: false,
+        fullscreen: true,
+
         run: server => {
+            
 
             if (server==='offline') api.offline = true
 
@@ -181,8 +193,8 @@
                     api.weAreDispensing({ "id": 'P1', "dispensing": true })
                     api.liveProductUpdate({
                         "id":       'P1',
-                        "available": 20,
-                        "filled":    10,
+                        "available": 10,
+                        "filled":    1,
                         "paid":   10.20
                     })
                     setTimeout(
@@ -198,19 +210,21 @@
         messageOfUserStart:       f => {
             web.userStartsUsingTheMachine()
             // ======================================== DEMO
-            // if (api.offline) api.physicalDispenceImitation()
+             // api.physicalDispenceImitation()
             // ======================================= /DEMO
         },
 
         waitForServerResponce:    f => {
             if (api.offline) return false
             console.log('Waiting for connect...')
-            ui.connectionScreen(true)
+            //ui.connectionScreen(true)
             web.listenForWelcome()
         },
         confirmedServerResponce:  f => {
             console.log('...got confirmation!')
-            ui.connectionScreen(false)
+            //ui.connectionScreen(false)
+            app.home()
+            api.waitForDispenseAction()
         },
 
         waitForDispenseAction: f => {
