@@ -69,6 +69,8 @@ parser.on('data', data => {
             }
         }));
     } else if (!btnPressed && state.dispensingProduct) {
+        serial.write("sd:0:0:0\n");
+
         ws.send(JSON.stringify({
             event: 'updateProduct',
             data: {
@@ -87,9 +89,9 @@ setInterval(() => {
     }
 
     if (state.dispensingProduct) {
-        serial.write("sd:25:0:0\n");
+        serial.write("sd:-100:0:0\n");
 
-        const delta = Math.min(state.dispensingProduct.available, 0.025);
+        const delta = Math.min(state.dispensingProduct.available, 0.000864);
         state.dispensingProduct.available -= delta;
         state.dispensingProduct.filled += delta;
         state.dispensingProduct.paid += delta * state.dispensingProduct.price;
@@ -104,7 +106,7 @@ setInterval(() => {
             }
         }));
     } else {
-        serial.write("sd:0:0:0\n");
+        // serial.write("sd:0:0:0\n");
     }
 }, 100);
 
@@ -142,6 +144,7 @@ ws.on('message', json => {
             }
             break;
         case 'end':
+console.log('end', data);
             if (data.id === process.env.MACHINE_ID) {
                 state.inUse = false;
                 state.dispensingProduct = null;
