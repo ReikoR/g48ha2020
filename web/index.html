@@ -176,6 +176,9 @@ html, body {
           </div>
       
           <div class="navbar-end">
+            <div class="navbar-item" id="img-avatar">
+              <img style="display: none;">
+            </div>
             <div class="navbar-item">
               <div class="buttons">
                 <a id="btn-google-sign-in" class="button is-light g-signin2" data-onsuccess="onSignIn"></a>
@@ -219,6 +222,8 @@ html, body {
 
         document.getElementById('btn-google-sign-in').style.display = 'none';
         document.getElementById('btn-sign-out').style.display = 'block';
+        document.getElementById('img-avatar').style.display = 'block';
+        document.getElementById('img-avatar').childNodes[0].src = profile.getImageUrl();
     }
 
     function signOut() {
