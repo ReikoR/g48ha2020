@@ -55,6 +55,10 @@ body {
     padding:   1rem;
 }
 
+.text-color-accent {
+    color: hsl(204, 22%, 55%);
+}
+
 
 /*  ------------------------------------------------------ Nav menu */
 
@@ -64,6 +68,7 @@ body {
     z-index:  2;
     top:  0;
     left: 0;
+    right: 0;
 
     display: flex;
     justify-content: flex-start;
@@ -110,6 +115,30 @@ body {
     background-image: url(../art/eye-3.svg);
     display: none;
 }
+.menu-button.stop::after  { background-image: url(../art/stopit.svg); }
+.menu-button.good {
+    background-image: url(../art/eye-3.svg);
+    margin-left: auto;
+    display: none;
+}
+.menu-button.good::after  { background-image: url(../art/good.svg); }
+
+.saved-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 1em;
+    height: 1em;
+    margin-left: 0.5em;
+    transform: scale(3);
+    background-repeat: no-repeat;
+    background-size:   contain;
+    background-image: url(../art/good.svg);
+}
+
+.el-menu.close-only .menu-button.back { display: none;  }
+.el-menu.close-only .menu-button.help { display: none;  }
+.el-menu.close-only .menu-button.stop { display: block; }
+.el-menu.close-only .menu-button.good { display: block; }
 
 /*  Intro buttons */
 
@@ -192,8 +221,9 @@ body {
 }
 .el-intro-message {
     grid-area: text;
-    font-size:4rem;
+    font-size:3rem;
 }
+
 .el-intro-button {
     grid-area: entrance;
     background-color: hsl(359, 54%, 53%);
@@ -313,6 +343,14 @@ body {
 .box.size-m::after { background-image: url(../art/size-m.svg); }
 .box.size-l::after { background-image: url(../art/size-l.svg); }
 
+/*  ------------------------------------------------------ Prepare */
+
+.el-confirm-your-choice {
+    font-size: 3rem;
+}
+.el-confirm-your-choice .title {
+    font-size: 4rem;
+}
 
 /*  ------------------------------------------------------ Action */
 
@@ -360,8 +398,8 @@ body {
 
     display: flex;
     justify-content: center;
-    align-content:   center;
-    align-items:     center;
+    align-content:   flex-start;
+    align-items:     flex-start;
 }
 .el-machine {
   --size: 0.7;
@@ -377,10 +415,10 @@ body {
 .el-pump {
     position: absolute;
     z-index:  1;
-    top:    calc( 11.033vw * var(--size) );
-    left:   calc( 71.053vw * var(--size) );
-    width:  calc( 14.372vw * var(--size) );
-    height: calc( 14.046vw * var(--size) );
+    top:    calc( 11.000vw * var(--size) );
+    left:   calc( 70.000vw * var(--size) );
+    width:  calc( 15.372vw * var(--size) );
+    height: calc( 15.046vw * var(--size) );
     background-repeat: no-repeat;
     background-size:   contain;
     background-image:  url(../art/action-pump.svg);

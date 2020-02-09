@@ -24,6 +24,7 @@
     <div class="menu-button back"></div>
     <div class="menu-button help"></div>
     <div class="menu-button stop"></div>
+    <div class="menu-button good"></div>
 </nav>
 
 
@@ -40,7 +41,7 @@
 
 <article id="Intro" class="screen">
     <div class="box el-intro-message">
-        Hi, I`m the Refilling Vending Machine RVM-1
+        <div>Hi, I`m the <span class="text-color-accent">Refilling Vending Machine</span> RVM-1</div>
     </div>
     <div class="box el-intro-button">
         Start
@@ -65,13 +66,27 @@
     </div>
 </article>
 
+<!-- ========================================= Prepare -->
+
+<article id="Prepare" class="screen">
+    <div class="box el-confirm-your-choice">
+        <div>
+            <span class="title">Confirmation screen</span><br>
+            Selected liquid is good.<br>
+            Made by natural ingredients.<br>
+            <span class="text-color-accent">Dont drink.</span> Wash your dish.<br>
+            <br><br>
+            Please, confirm or cancel.
+        </div>
+    </div>
+</article>
+
 <!-- ========================================= Action -->
 
 <article id="Action" class="screen">
     <div class="box el-hold-the-button">
         Hold the button
     </div>
-    <div class="menu-button el-stop-the-button"></div>
 </article>
 
 <!-- ========================================= Pump -->
@@ -104,8 +119,12 @@
     <div class="box el-thank-you">
         Thank You!
     </div>
-    <div class="box el-feedback">
-        About
+    <div class="box el-about-illustration">
+        <img src="art/about.svg" alt="Infographics">
+    </div>
+    <div class="box">
+        The planet is saved
+        <span class="saved-icon"></span>
     </div>
 </article>
 
@@ -143,7 +162,10 @@
 
         run: f => {
             ui.screen('Launch')//ui.screen('Launch')
-        }
+        },
+
+        messageOfConfirmedAction: f => console.log('LOG: Action confirmed'),
+        messageOfUserStart: f => console.log('LOG: User start')
 
     }
 

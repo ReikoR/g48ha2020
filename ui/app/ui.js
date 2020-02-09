@@ -9,12 +9,14 @@ const el = {
     screenId:           id=>document.querySelector('#'+id),
     productsContainer:  document.querySelector('#Products'),
     sizes:              [...document.querySelectorAll('#Setup .box')],
-    showSuccess:        [document.querySelector('.el-machine')],
+    showSuccess:        [],
     goHome:             [document.querySelector('.el-thank-you')],
-    goProduct:          [/*document.querySelector('.el-machine')*/],
-    goAbout:            [document.querySelector('.el-feedback')],
-    goPump:             [document.querySelector('.el-hold-the-button'),
-                         document.querySelector('.el-stop-the-button')]
+    goProduct:          [document.querySelector('.el-menu .stop'),
+                         document.querySelector('.el-about-illustration')],
+    goAbout:            [/*document.querySelector('.el-feedback')*/],
+    goPump:             [document.querySelector('.el-hold-the-button')],
+    goAction:           [document.querySelector('.el-machine')],
+    menuConfirm:         document.querySelector('.el-menu .good')
 }
 
 let screen = {
@@ -37,9 +39,9 @@ const app = {
         productDiv.id = 'Product' + dna.id
         app.activateProduct(productDiv)
         el.productsContainer.appendChild(productDiv)
-        productMapEvent(productDiv)
+        //productMapEvent(productDiv)
     },
-    activateProduct: el => el.addEventListener('click', ui.doSize),
+    activateProduct: el => el.addEventListener('click', ui.doPrepare),
     updateProduct: dna=>false,
 
     updateProducts: data => {
@@ -79,10 +81,14 @@ const ui = {
     doSetup: f => {
           ui.screen('Setup')
     },
+    doPrepare: f => {
+          ui.screen('Prepare')
+    },
     doAction: f => {
           ui.screen('Action')
     },
     doThanks: f => {
+          api.messageOfConfirmedAction()
           ui.screen('Thanks')
     },
     doHelp: f => {
@@ -92,14 +98,22 @@ const ui = {
           ui.screen('Pump')
     },
     back: f => {
-        ui.screen('Intro')
+        if (screen.current === 'Products') ui.doHome()
+        else ui.doActivate()
+    },
+    confirm: f => {
+        if (screen.current === 'Prepare') ui.doAction()
+        else ui.doThanks()
     },
     updateMenu: (s = screen) => {
         if (s.current === 'Intro') app.set(el.menu,'is-intro')
         else app.unset(el.menu,'is-intro')
 
-        if (s.current === 'Launch' || s.current === 'Thanks' || s.current === 'Pump') app.set(el.menu,'is-hidden')
+        if (s.current === 'Launch' || s.current === 'Pump') app.set(el.menu,'is-hidden')
         else app.unset(el.menu,'is-hidden')
+
+        if (s.current === 'Action' || s.current === 'Prepare') app.set(el.menu,'close-only')
+        else app.unset(el.menu,'close-only')
 
         if (s.current === 'Help') app.set(el.menu,'hide-help')
         else app.unset(el.menu,'hide-help')
@@ -121,14 +135,17 @@ const ui = {
 el.run.addEventListener('click', f => {
     app.goFullScreen()
     ui.doHome()
+    api.messageOfUserStart()
 })
 //el.run.addEventListener('click', )
 el.activator.addEventListener('click', ui.doActivate)
 el.menuBack.addEventListener('click', ui.back)
+el.menuConfirm.addEventListener('click', ui.confirm)
 el.menuHelp.addEventListener('click', ui.doHelp)
 el.goProduct.map(el=>el.addEventListener('click', ui.doActivate))
 el.goPump.map(el=>el.addEventListener('click', ui.doPump))
 el.goAbout.map(el=>el.addEventListener('click', ui.doHelp))
+el.goAction.map(el=>el.addEventListener('click', ui.doAction))
 el.showSuccess.map(el=>el.addEventListener('click', ui.doThanks))
 el.goHome.map(el=>el.addEventListener('click', ui.doHome))
 el.sizes.map(el=>el.addEventListener('click', ui.doAction))
