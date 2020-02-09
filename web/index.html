@@ -7,9 +7,12 @@
 <meta charset="utf-8">
 <title>Leaflet Web Map</title>
 
+<link rel="shortcut icon" href="assets/logo.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.8.0/css/bulma.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-extensions@6.2.7/bulma-accordion/dist/css/bulma-accordion.min.css" />
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-client_id" content="955210358644-7nnmf9giftrsv2dbgo7k40na68uakdl6.apps.googleusercontent.com">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bulma-extensions@6.2.7/bulma-accordion/dist/js/bulma-accordion.min.js"></script>
 
@@ -42,29 +45,189 @@ html, body {
     font-weight: bold;
     width: 100%;
     text-align: center;
+    white-space: nowrap;
 }
 
 .progress-bar-container {
     position: relative;
     margin: 10px;
-    width:100px;
+    width: 150px;
+}
+
+.checkbox-container {
+    background: white;
+    opacity: 0.7;
+    z-index: 1000;
+    position: absolute;
+    top: 20vh;
+    left: 10wh;
+}
+
+.logo {
+    color: rgb(255,20,147);
+    font-weight: bold;
+}
+
+.logo img {
+    transform: rotate(90deg);
+    margin: 0 5px;
 }
 
 #map {
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 52px);
+    z-index: 0;
 }
 </style>
 
 </head>
 
 <body>
-
-<div id="map"></div>
+    <!-- <nav class="navbar">
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+              <a class="navbar-item" href="">
+                <img src="../assets/logo.png" height="40">
+              </a>
+            </div>
+            <div class="navbar-menu">
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                      Products
+                    </a>
+                    <div class="navbar-dropdown is-boxed">
+                        <a class="navbar-item">
+                            <label class="checkbox list-item">
+                                <input type="checkbox" name="soap" checked>
+                                Soap
+                            </label>
+                        </a>
+                        <a class="navbar-item">
+                            <label class="checkbox list-item">
+                                <input type="checkbox" name="shampoo" checked>
+                                Shampoo
+                            </label>
+                        </a>
+                        <a class="navbar-item">
+                            <label class="checkbox list-item">
+                                <input type="checkbox" name="dishwashing" checked>
+                                Dishwashing
+                            </label>
+                        </a>
+                    </div>
+                </div>         
+              <div class="nav-right">
+                <div class="navbar-item">
+                  <div class="buttons">
+                    <a class="button is-primary">
+                      <strong>Sign up</strong>
+                    </a>
+                    <a class="button is-light g-signin2" data-onsuccess="onSignIn">
+                    </a>
+                    <a href="#" onclick="signOut();">Sign out</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+    </nav> -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item logo" href="">
+              REF
+            <img class="img" src="assets/logo.png" height="28">
+            LL
+          </a>
+      
+          <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+      
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-start">      
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                Products
+              </a>
+              <div class="navbar-dropdown">
+                <a class="navbar-item">
+                    <label class="checkbox list-item">
+                        <input type="checkbox" name="soap" checked>
+                        Soap
+                    </label>
+                </a>
+                <a class="navbar-item">
+                    <label class="checkbox list-item">
+                        <input type="checkbox" name="shampoo" checked>
+                        Shampoo
+                    </label>
+                </a>
+                <a class="navbar-item">
+                    <label class="checkbox list-item">
+                        <input type="checkbox" name="dishwashing" checked>
+                        Dishwashing
+                    </label>
+                </a>
+              </div>
+            </div>
+          </div>
+      
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+               <!--  <a class="button is-primary">
+                  <strong>Sign up</strong>
+                </a> -->
+                <a class="button is-light g-signin2" data-onsuccess="onSignIn">
+                </a>
+                <a href="#" onclick="signOut();">Sign out</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
 <script src="map.js"></script>
 <script src="websocket.js"></script>
 <script>
-    const accordions = bulmaAccordion.attach();
+    
+    function updateCheckboxStates() {
+        checkboxStates = [];
+
+        for (let input of document.querySelectorAll('input')) {
+            if (input.checked) {
+                checkboxStates.push(input.name);
+            }
+        }
+    }
+
+    for (let input of document.querySelectorAll('input')) {
+        input.onchange = (e) => {
+            geojsonLayer.clearLayers();
+            updateCheckboxStates();
+            geojsonLayer.addData(machines);
+        }
+    }
+
+    function onSignIn(googleUser) {
+        const profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    }
+
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+        console.log('User signed out.');
+        });
+    }
 </script> 
 </body>
 

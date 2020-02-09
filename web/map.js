@@ -20,23 +20,53 @@ const baseLayers = {
     Streets: streets
 }
 
-const markers = L.featureGroup().on('click', (e) => {
-    // Set marker to the center
-    console.log('Clsiked on marker', e);
-});
-markers.addTo(map);
+const geojsonLayer = L.geoJSON(null, {
+    filter: (feature) => {
+        for (let product of feature.properties.products) {
+            if (checkboxStates.includes(product.type)) {
+                return true;
+            }
+        }
+        return false;
+    },
+    
+    onEachFeature: function (feature, layer) {
+        // address
+        layer.bindTooltip(`<div>${feature.properties.address}</div>`, {
+            direction: 'bottom', 
+            permanent: true,
+            className: 'custom-tooltip',
+            opacity: 0.7
+        }).openTooltip();
 
-const diswashing = L.layerGroup().addTo(map);
-const soap = L.layerGroup().addTo(map);
-const shampoo = L.layerGroup().addTo(map);
+        // get all types
+        types = {};
+        for (const product of feature.properties.products) {
+            if (!types.hasOwnProperty(product.type)) {
+                types[product.type] = [product];
+            } else {
+                types[product.type].push(product);
+            }
+        }
 
-const overlays = {
-    diswashing,
-    soap,
-    shampoo
-}
+        // machine content
+        let popUpContent = '<section class="accordions">';
+        for (const [type, products] of Object.entries(types)) {
+            popUpContent += getAccordion(type, products);
+        }
+        popUpContent += `</section>`;
 
-const layerControl = L.control.layers(baseLayers, overlays);
+        layer.bindPopup(popUpContent).openPopup().on('popupopen', () => bulmaAccordion.attach());
+
+    },
+    // set custom icon
+    pointToLayer: function(feature, latlng) {
+        return L.marker(latlng, { icon: feature.properties.online ? greenIcon : greyIcon });
+    }
+}).addTo(map);
+
+
+const layerControl = L.control.layers(baseLayers);
 layerControl.addTo(map);
 
 const greenIcon = new L.Icon({

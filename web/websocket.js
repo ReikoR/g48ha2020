@@ -7,11 +7,13 @@ socket.addEventListener('open', function (event) {
 });
 
 let totalMachines = null;
+let checkboxStates = [];
+
 // Listen for messages
 socket.addEventListener('message', function (json) {
     const { event, data } = JSON.parse(json.data);
 
-    console.log('Message from server ', event, data);
+    //console.log('Message from server ', event, data);
 
     switch(event) {
         case 'info':
@@ -22,10 +24,11 @@ socket.addEventListener('message', function (json) {
             break;
     }
 
-    if (machines.length === totalMachines) {
-        console.log(machines.length);
+    if (machines.features.length === totalMachines) {
         setTimeout(() => {
-            map.fitBounds(markers.getBounds());
+            map.fitBounds(geojsonLayer.getBounds(), {
+                padding: [50, 50]
+            });
         });
     }
 });
@@ -79,51 +82,30 @@ function getAccordion(type, products) {
             </article>`;
 }
 
-const machines = [];
+function dataToGeoJson({ lat, lng, id, address, online, products }) {
+    return {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [lng, lat]
+        },
+        "properties": {
+            id,
+            online,
+            address,
+            products
+        }
+    }
+}
+
+const machines = {
+    "type": "FeatureCollection",
+    "features": [
+    ]
+}
 
 function addMachine(data) {
-    console.log('Data', data);
-    
-    machines.push(data);
-
-    const marker = L.marker([data.lat, data.lng],
-        { icon: data.online ? greenIcon : greyIcon });
-    
-    types = {};
-    for (const product of data.products) {
-        if (!types.hasOwnProperty(product.type)) {
-            types[product.type] = [product];
-        } else {
-            types[product.type].push(product);
-        }
-
-        switch (product.type) {
-            case 'soap':
-                soap.addLayer(marker);
-            case 'diswashing':
-                diswashing.addLayer(marker);
-            case 'shampoo':
-                shampoo.addLayer(marker);
-        }
-    }
-
-    let popUpContent = '<section class="accordions">';
-    for (const [type, products] of Object.entries(types)) {
-        popUpContent += getAccordion(type, products);
-    }
-    popUpContent += `</section>`;
-
-    
-    marker.bindTooltip(`<div>${data.address}</div>`, {
-        direction: 'bottom', 
-        permanent: true,
-        className: 'custom-tooltip',
-        opacity: 0.7
-    }).openTooltip();
-
-    marker.bindPopup(popUpContent).openPopup().on('popupopen', () => bulmaAccordion.attach());
-
-   
-        
-    markers.addLayer(marker);
+    machines.features.push(dataToGeoJson(data));
+    updateCheckboxStates();
+    geojsonLayer.addData(machines);
 }
