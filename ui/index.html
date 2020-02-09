@@ -32,7 +32,7 @@
 
 <article id="Launch" class="screen">
     <div class="box el-launch-app">
-        Run
+        Launch App
     </div>
 </article>
 
@@ -158,20 +158,19 @@
              ]
             ) => app.updateProducts(data),
 
-        updateProduct: ( data = {id:1, vol:1.00} ) => app.updateProduct(data),
-
         run: f => {
-            ui.screen('Launch')//ui.screen('Launch')
+            api.setupProducts()
+            app.start('Launch')
+            if (f!=='offline') web.connect()
         },
 
         messageOfConfirmedAction: f => console.log('LOG: Action confirmed'),
         messageOfUserStart: f => console.log('LOG: User start')
 
     }
-
-    api.setupProducts()
+ // autorun
     api.run()
-    web.connect()
+    
 
 </script>
 

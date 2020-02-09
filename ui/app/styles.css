@@ -232,10 +232,10 @@ body {
 
 .el-launch-app {
     background-color: hsl(359, 54%, 53%);
-    font-size: 4rem;
-    width: 16rem;
+    font-size: 3rem;
+    max-width: 24rem;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0.5rem 2rem;
     
 }
 
