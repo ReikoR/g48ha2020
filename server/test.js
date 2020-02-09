@@ -3,7 +3,7 @@ const ws = new WebSocket('ws://ec2-13-53-129-204.eu-north-1.compute.amazonaws.co
 
 ws.on('open', () => {
     ws.send(JSON.stringify({
-        event: 'start',
+        event: 'end',
         data: {
             id: 'M1'
         }
