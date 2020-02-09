@@ -31,8 +31,17 @@
 <!-- ========================================= Launch -->
 
 <article id="Launch" class="screen">
+    <div class="box el-welcome-robot">
+        <div>
+        <div class="box"><img src="art/Refill-Logo.svg" alt="" class="el-welcome-logo"></div>
+        <div class="title">Refill</div>
+        </div>
+    </div>
+    <div class="box el-ready-app">
+        Get ready
+    </div>
     <div class="box el-launch-app">
-        Launch App
+        Start
     </div>
 </article>
 
@@ -44,7 +53,7 @@
         <div>Hi, I`m the <span class="text-color-accent">Refilling Vending Machine</span> RVM-1</div>
     </div>
     <div class="box el-intro-button">
-        Start
+        Use Card
     </div>
 </article>
 
@@ -142,6 +151,17 @@
     </div>
 </article>
 
+<!-- ========================================= Connection -->
+
+<article id="Connection" class="screen">
+    <div class="box el-server-connection">
+        Connection...
+    </div>
+    <div class="box el-server-fallback">
+        Skip and load demo
+    </div>
+</article>
+
 <!-- ========================================= JS -->
 
 <script src="app/ui.js"></script>
@@ -150,30 +170,143 @@
 
     const api = {
 
-        setupProducts: (
-             data = [
-                 { id:1, vol:0.90, label:'Shower Gel' },
-                 { id:2, vol:0.75, label:'Liquid Soap' },
-                 { id:3, vol:0.80, label:'Some Liquid' },
-                 { id:4, vol:0.32, label:'Awesome Liquid' },
-                 { id:5, vol:0.00, label:'Is Empty' },
-                 { id:6, vol:0.10, label:'Is Not Enought' }
-             ]
-            ) => app.updateProducts(data),
+        offline: false,
+        fullscreen: true,
 
-        run: f => {
+        run: server => {
+            
+
+            if (server==='offline') api.offline = true
+
+         // launch with demo data
             api.setupProducts()
             app.run('Launch')
-            if (f!=='offline') web.connect()
+
+         // then update data from server
+            if (!api.offline) web.connect()
+
         },
 
-        messageOfConfirmedAction: f => console.log('LOG: Action confirmed'),
-        messageOfUserStart: f => console.log('LOG: User start')
+        physicalDispenceImitation: f => {
+            setTimeout(
+                f => {
+                    api.weAreDispensing({ "id": 'P1', "dispensing": true })
+                    api.liveProductUpdate({
+                        "id":       'P1',
+                        "available": 10,
+                        "filled":    1,
+                        "paid":   10.20
+                    })
+                    setTimeout(
+                        f => {
+                            api.weAreNotDispensing({ "id": 'P1', "dispensing": false })
+                        }, 4000
+                    )
+                }, 4000
+            )
+        },
 
+        messageOfConfirmedAction: web.userFinishedOrder,
+        messageOfUserStart:       f => {
+            web.userStartsUsingTheMachine()
+            // ======================================== DEMO
+             // api.physicalDispenceImitation()
+            // ======================================= /DEMO
+        },
+
+        waitForServerResponce:    f => {
+            if (api.offline) return false
+            console.log('Waiting for connect...')
+            //ui.connectionScreen(true)
+            web.listenForWelcome()
+        },
+        confirmedServerResponce:  f => {
+            console.log('...got confirmation!')
+            //ui.connectionScreen(false)
+            app.home()
+            api.waitForDispenseAction()
+        },
+
+        waitForDispenseAction: f => {
+            if (api.offline) return false
+            console.log('Waiting for dispense...')
+            web.listenForDispense()
+        },
+        weAreDispensing: data => {
+            console.log('Dispensing...')
+            ui.dispencingScreen(true)
+        },
+        weAreNotDispensing: data => {
+            console.log('...no more dispensing')
+            ui.dispencingScreen(false)
+        },
+        liveProductUpdate: data => {
+            app.updateProduct(data)
+            app.updateProducts()
+            app.updateCounters(data)
+        },
+
+        setupProducts: (
+             data = [
+                 {
+                    "id":   'P1',
+                    "type": 'shampoo',
+                    "name": 'Shower Gel',
+                    "price": 1,
+                    "capacity": 100,
+                    "available": 80,
+                    "dispensing": false
+                },
+                 {
+                    "id":   'P2',
+                    "type": 'soap',
+                    "name": 'Liquid Soap',
+                    "price": 1,
+                    "capacity": 100,
+                    "available": 75,
+                    "dispensing": false
+                },
+                 {
+                    "id":   'P3',
+                    "type": 'liquid',
+                    "name": 'Some Liquid',
+                    "price": 1,
+                    "capacity": 100,
+                    "available": 30,
+                    "dispensing": false
+                },
+                 {
+                    "id":   'P4',
+                    "type": 'liquid',
+                    "name": 'Awesome Liquid',
+                    "price": 1,
+                    "capacity": 100,
+                    "available": 60,
+                    "dispensing": false
+                },
+                 {
+                    "id":   'P5',
+                    "type": 'liquid',
+                    "name": 'Is Empty',
+                    "price": 1,
+                    "capacity": 100,
+                    "available": 0,
+                    "dispensing": false
+                },
+                 {
+                    "id":   'P6',
+                    "type": 'liquid',
+                    "name": 'Is Not Enought',
+                    "price": 1,
+                    "capacity": 100,
+                    "available": 5,
+                    "dispensing": false
+                }
+             ]
+            ) => app.updateProducts(data)
     }
  // autorun
-    api.run()
-    
+    api.run('not-offline')
 
 </script>
 

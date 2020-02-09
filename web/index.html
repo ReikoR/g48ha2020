@@ -20,6 +20,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 .leaflet-popup-tip-container {
@@ -176,14 +177,15 @@ html, body {
           </div>
       
           <div class="navbar-end">
+            <div class="navbar-item" id="img-avatar" style="display: none;">
+              <figure class="image is-24x24">
+                <img class="is-rounded">
+              </figure>
+            </div>
             <div class="navbar-item">
               <div class="buttons">
-               <!--  <a class="button is-primary">
-                  <strong>Sign up</strong>
-                </a> -->
-                <a class="button is-light g-signin2" data-onsuccess="onSignIn">
-                </a>
-                <a href="#" onclick="signOut();">Sign out</a>
+                <a id="btn-google-sign-in" class="button is-light g-signin2" data-onsuccess="onSignIn"></a>
+                <a id="btn-sign-out" href="#" style="display: none;" onclick="signOut();">Sign out</a>
               </div>
             </div>
           </div>
@@ -220,12 +222,20 @@ html, body {
         console.log('Name: ' + profile.getName());
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+        document.getElementById('btn-google-sign-in').style.display = 'none';
+        document.getElementById('btn-sign-out').style.display = 'block';
+        document.getElementById('img-avatar').style.display = 'block';
+        document.getElementById('img-avatar').querySelector('img').src = profile.getImageUrl();
     }
 
     function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
-        console.log('User signed out.');
+          console.log('User signed out.');
+          document.getElementById('btn-google-sign-in').style.display = 'block';
+          document.getElementById('btn-sign-out').style.display = 'none';
+          document.getElementById('img-avatar').style.display = 'none';
         });
     }
 </script> 
