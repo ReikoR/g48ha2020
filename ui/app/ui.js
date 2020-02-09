@@ -229,9 +229,14 @@ const app = {
     run: (id='Launch') => ui.goScreen(id),
 
     getReady: f => {
-        if (api.fullscreen) app.goFullScreen()
+        if (api.fullscreen) {
+            app.goFullScreen()
+            api.fullscreen = false
+        }
+    
         api.messageOfConfirmedAction()
         dom.ad(dom.fid('Launch'), 'is-ready')
+        ui.goScreen('Launch')
     },
 
     play: f => {
@@ -262,7 +267,11 @@ const app = {
             },
             {
                 s: '.el-menu .back',
-                f: ui.menuBackButton
+                //f: ui.menuBackButton
+                f: f => {
+                    app.getReady()
+                    //app.home()
+                }
             },
             {
                 s: '.el-menu .help',

@@ -30,6 +30,7 @@ const web = {
 
     readProducts: dataArray => {
         if (!dataArray.length) return false
+        console.log('Products updated.')
         /*app.updateProducts
 
         let ProductsToSetup = []
