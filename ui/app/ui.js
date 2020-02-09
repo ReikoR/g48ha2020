@@ -20,7 +20,8 @@ const dom = {
     findAndMapEvents: arr =>
         arr.map( e=>dom.findAndMapEvent(e.s, e.f) ),
 
-    redrawProducts: new_products => {
+    /*redrawProducts: new_products => {
+        //let new_products = [...app.products]
         let productsWrap = dom.f('#Products')
         let productWizzard = dna => {
             let productDiv = document.createElement('div')
@@ -34,6 +35,24 @@ const dom = {
         }
         productsWrap.innerHTML = ''
         new_products.map( dna => productsWrap.appendChild(productWizzard(dna)))
+        dom.clickListener( dom.ff('#Products>.box'), ui.clickOnProduct )
+    },*/
+    redrawCurrentProducts: f => {
+        let productsWrap = dom.f('#Products')
+        let productWizzard = id => {
+            let dna =  app.products[id]
+            let productDiv = document.createElement('div')
+            dom.ad(productDiv,'box')
+            if (dna.vol < 0.25)
+                dom.ad(productDiv,'is-empty')
+            productDiv.setAttribute('style','--instock:'+dna.vol)
+            productDiv.innerText = dna.label
+            productDiv.id = 'Product' + dna.id
+            return productDiv
+        }
+        productsWrap.innerHTML = ''
+        for (id in app.products)
+            productsWrap.appendChild(productWizzard(id))
         dom.clickListener( dom.ff('#Products>.box'), ui.clickOnProduct )
     }
 
@@ -146,6 +165,19 @@ const ui = {
      // Active class
         dom.ff('.screen').map( el=>dom.rm(el,'is-active') )
         dom.ad( dom.fid(id), 'is-active' )
+    },
+
+    connectionScreen: status => {
+        let elScreen = dom.fid('Connection')
+        if (status)
+            dom.ad(elScreen, 'is-visible')
+        else
+            dom.rm(elScreen, 'is-visible')
+    },
+
+    dispencingScreen: status => {
+        if (status) ui.goScreen('Pump')
+        else        ui.goScreen('Action')
     }
 
 }
@@ -154,6 +186,41 @@ const ui = {
 
 const app = {
 
+    products: {},
+    updateProduct: dna => {
+        if (!dna || !dna.id) return false
+        let id  = dna.id
+        if (!app.products[id]) app.products[id] = {id}
+        let p = app.products[id]
+        app.products[id].type      = dna.type      || p.type      || 'other'
+        app.products[id].label     = dna.name      || p.label     || 'Liquid'
+        app.products[id].price     = dna.price     || p.price     || 0
+        app.products[id].capacity  = dna.capacity  || p.capacity  || 0
+        app.products[id].available = dna.available || p.available ||0
+        app.products[id].filled    = dna.filled    || p.filled    || 0
+        app.products[id].paid      = dna.paid      || p.paid      || 0
+        let vol = p => {
+            if ( !p.capacity || !p.available ) return 0
+            return p.available / p.capacity
+        }
+        app.products[id].vol = vol(app.products[id])
+    },
+
+    updateProducts: (arr=false) => {
+        if (arr) {
+            app.products = {}
+            arr.map(el=>app.updateProduct(el))
+        }
+        dom.redrawCurrentProducts()
+    },
+
+    updateCounters: dna => {
+        let v = dna.filled || 0
+        let p = dna.paid   || 0
+        ui.counters.updateVolume(v)
+        ui.counters.updatePrice(p)
+    },
+
     load: f => {
         app.EventMapper()
     },
@@ -161,7 +228,7 @@ const app = {
     run: (id='Launch') => ui.goScreen(id),
 
     play: f => {
-        app.goFullScreen()
+        //app.goFullScreen()
         ui.goScreen('Intro')
     },
 
@@ -222,6 +289,10 @@ const app = {
             {
                 s: '.el-machine',
                 f: f => ui.goScreen('Action')
+            },
+            {
+                s: '.el-server-fallback',
+                f: app.skipServerWelcome
             }
         ]
         let start = dom.findAndMapEvents(story)
@@ -230,11 +301,12 @@ const app = {
     refillingImitation: f => {
         const randomVolumer = f => {
             if ( ui.screen.current !== 'Pump' ) return false
-            let d = Math.round(Math.random()*10)
-            let p = Math.round(Math.random()*10) / 100
+            let d = Math.round(Math.random()*5+1)
+            let p = Math.round(Math.random()*5+1) / 100
             ui.counters.updateVolume( 1*ui.counters.volume + d )
             ui.counters.updatePrice( 1*ui.counters.price   + p )
-            setTimeout( randomVolumer, 250 )
+            let t = 250
+            setTimeout( randomVolumer, t )
         }
         ui.goScreen('Pump')
         randomVolumer()
@@ -255,15 +327,13 @@ const app = {
         launchIntoFullscreen(document.documentElement);
     },
 
-    updateProducts: arr => {
-        dom.redrawProducts(arr)
-    },
-
     confirmToCompleteOrder: f => {
         ui.goScreen('Thanks')
         api.messageOfConfirmedAction()
         ui.counters.reset()
-    }
+    },
+
+    skipServerWelcome: f => api.confirmedServerResponce()
 
 }
 // autoinit

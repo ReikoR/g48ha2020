@@ -370,7 +370,7 @@ body {
 
 #Action {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 2fr;
     grid-template-rows:    1fr min-content;
     grid-template-areas:  'text text' 'x button'
 }
@@ -545,6 +545,21 @@ body {
     min-width: 6rem;
     display: inline-block;
     text-align: left;
+}
+
+
+#Connection.screen.is-visible {
+    position: fixed;
+    z-index:  3;
+    background-color: hsl(226, 15%, 12%);
+    color:            hsl(226, 27%, 90%);
+    transform: translateX(0);
+}
+.el-server-connection {
+    font-size: 3em;
+}
+.el-server-fallback {
+    opacity: 0.25;
 }
 
 
