@@ -55,6 +55,10 @@ body {
     padding:   1rem;
 }
 
+.text-color-accent {
+    color: hsl(204, 22%, 55%);
+}
+
 
 /*  ------------------------------------------------------ Nav menu */
 
@@ -64,6 +68,7 @@ body {
     z-index:  2;
     top:  0;
     left: 0;
+    right: 0;
 
     display: flex;
     justify-content: flex-start;
@@ -110,6 +115,30 @@ body {
     background-image: url(../art/eye-3.svg);
     display: none;
 }
+.menu-button.stop::after  { background-image: url(../art/stopit.svg); }
+.menu-button.good {
+    background-image: url(../art/eye-3.svg);
+    margin-left: auto;
+    display: none;
+}
+.menu-button.good::after  { background-image: url(../art/good.svg); }
+
+.saved-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 1em;
+    height: 1em;
+    margin-left: 0.5em;
+    transform: scale(3);
+    background-repeat: no-repeat;
+    background-size:   contain;
+    background-image: url(../art/good.svg);
+}
+
+.el-menu.close-only .menu-button.back { display: none;  }
+.el-menu.close-only .menu-button.help { display: none;  }
+.el-menu.close-only .menu-button.stop { display: block; }
+.el-menu.close-only .menu-button.good { display: block; }
 
 /*  Intro buttons */
 
@@ -192,8 +221,9 @@ body {
 }
 .el-intro-message {
     grid-area: text;
-    font-size:4rem;
+    font-size:3rem;
 }
+
 .el-intro-button {
     grid-area: entrance;
     background-color: hsl(359, 54%, 53%);
@@ -202,10 +232,10 @@ body {
 
 .el-launch-app {
     background-color: hsl(359, 54%, 53%);
-    font-size: 4rem;
-    width: 16rem;
+    font-size: 3rem;
+    max-width: 24rem;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0.5rem 2rem;
     
 }
 
@@ -313,6 +343,14 @@ body {
 .box.size-m::after { background-image: url(../art/size-m.svg); }
 .box.size-l::after { background-image: url(../art/size-l.svg); }
 
+/*  ------------------------------------------------------ Prepare */
+
+.el-confirm-your-choice {
+    font-size: 3rem;
+}
+.el-confirm-your-choice .title {
+    font-size: 4rem;
+}
 
 /*  ------------------------------------------------------ Action */
 
@@ -357,6 +395,11 @@ body {
 
 #Pump {
     padding-top: 1rem;
+
+    display: flex;
+    justify-content: center;
+    align-content:   flex-start;
+    align-items:     flex-start;
 }
 .el-machine {
   --size: 0.7;
@@ -372,10 +415,10 @@ body {
 .el-pump {
     position: absolute;
     z-index:  1;
-    top:    calc( 11.033vw * var(--size) );
-    left:   calc( 71.053vw * var(--size) );
-    width:  calc( 14.372vw * var(--size) );
-    height: calc( 14.046vw * var(--size) );
+    top:    calc( 11.000vw * var(--size) );
+    left:   calc( 70.000vw * var(--size) );
+    width:  calc( 15.372vw * var(--size) );
+    height: calc( 15.046vw * var(--size) );
     background-repeat: no-repeat;
     background-size:   contain;
     background-image:  url(../art/action-pump.svg);
@@ -448,5 +491,26 @@ body {
         opacity: 0.1;
     }
 }
+
+#PumpNumbers {
+    pointer-events: none;
+}
+.el-gas-numbers {
+    position: absolute;
+    z-index:  1;
+    bottom:   12%;
+    left:     10vw;
+    color:    hsl( 42, 79%, 53%);
+    font-weight: bolder;
+    font-size: 15vw;
+    min-width: 30vw;
+    line-height:  1;
+    text-align: right;
+    text-shadow: -1px -1px 0 black, 1px 1px 0 black, -2px -2px 0 black, 2px 2px 0 black;
+}
+.el-gas-numbers .ml {
+    font-size: 0.32em;
+}
+
 
 /*  EOF styles */
