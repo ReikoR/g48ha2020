@@ -16,7 +16,31 @@ const parser = new SerialPort.parsers.Readline();
 serial.pipe(parser);
 
 parser.on('data', data => {
-    if (!state.machine || !state.inUse) {
+    if (!state.machine) {
+        return;
+    }
+
+    // Check IR
+    if (!state.inUse && data === '<ir:1>') {
+        state.inUse = true;
+        state.dispensingProduct = null;
+
+        for (let product of state.machine.products) {
+            product.filled = 0;
+            product.paid = 0;
+        }
+
+        ws.send(JSON.stringify({
+            event: 'start',
+            data: {
+                id: process.env.MACHINE_ID
+            }
+        }));
+        return;
+    }
+
+    // Check button
+    if (!state.inUse) {
         return;
     }
 
@@ -110,17 +134,6 @@ ws.on('message', json => {
         case 'addMachine':
             if (data.id === process.env.MACHINE_ID) {
                 state.machine = data;
-
-                for (let product of state.machine.products) {
-                    product.filled = 0;
-                    product.paid = 0;
-                }
-            }
-            break;
-        case 'start':
-            if (data.id === process.env.MACHINE_ID) {
-                state.inUse = true;
-                state.dispensingProduct = null;
 
                 for (let product of state.machine.products) {
                     product.filled = 0;
