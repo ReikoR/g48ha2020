@@ -240,6 +240,7 @@ const app = {
     },
 
     play: f => {
+        // api.messageOfConfirmedAction()
         api.messageOfUserStart()
         ui.goScreen('Intro')
     },
@@ -320,7 +321,7 @@ const app = {
     refillingImitation: f => {
         const randomVolumer = f => {
             if ( ui.screen.current !== 'Pump' ) return false
-            let d = Math.round(Math.random()*5+1)
+            let d = Math.round(Math.random()*5+1) / 1000
             let p = Math.round(Math.random()*5+1) / 100
             ui.counters.updateVolume( 1*ui.counters.volume + d )
             ui.counters.updatePrice( 1*ui.counters.price   + p )

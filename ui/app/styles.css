@@ -68,9 +68,9 @@ body {
 .el-menu {
     position: fixed;
     z-index:  2;
-    top:  0;
-    left: 0;
-    right: 0;
+    top:  2rem;
+    left: 1rem;
+    right: 1rem;
 
     display: flex;
     justify-content: flex-start;
@@ -203,7 +203,7 @@ body {
     position: fixed;
     z-index:  1;
 
-    padding:   calc( 1*var(--menu-size) + 1rem) 1rem 1rem 1rem;
+    padding:   calc( 1*var(--menu-size) + 3rem) 1rem 1rem 1rem;
 }
 .screen:not(.is-active) {
     transform: translateX(100%);
