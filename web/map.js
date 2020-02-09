@@ -66,8 +66,8 @@ const geojsonLayer = L.geoJSON(null, {
 }).addTo(map);
 
 
-const layerControl = L.control.layers(baseLayers);
-layerControl.addTo(map);
+/* const layerControl = L.control.layers(baseLayers);
+layerControl.addTo(map); */
 
 const greenIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
