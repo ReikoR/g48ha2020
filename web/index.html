@@ -223,7 +223,7 @@ html, body {
         document.getElementById('btn-google-sign-in').style.display = 'none';
         document.getElementById('btn-sign-out').style.display = 'block';
         document.getElementById('img-avatar').style.display = 'block';
-        document.getElementById('img-avatar').childNodes[0].src = profile.getImageUrl();
+        document.getElementById('img-avatar').querySelector('img').src = profile.getImageUrl();
     }
 
     function signOut() {
